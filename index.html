@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MADAR Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F8F6; --surface:#FFFFFF; --surface-2:#F0F5F2; --surface-3:#E7EFEA;
+  --border:#E0EAE5; --border-soft:#EDF3F0;
+  --primary:#159A6B; --primary-hi:#12855C;
+  --primary-soft:rgba(21,154,107,.10);
+  --mint:#69D9AD; --mint-ink:#0E7B56; --mint-soft:rgba(105,217,173,.14); --mint-line:rgba(21,154,107,.28);
+  --ink:#0D1F18;
+  --text:#101814; --text-2:#3D4E45; --muted:#77897F; --muted-2:#9AABA1;
+  --ok:#159A6B; --ok-soft:rgba(21,154,107,.12);
+  --warn:#C98A1F; --warn-soft:rgba(201,138,31,.13);
+  --danger:#D14338; --danger-soft:rgba(209,67,56,.11);
+  --info:#2D7FB0; --info-soft:rgba(45,127,176,.12);
+  --r-lg:18px; --r:14px; --r-sm:10px; --r-xs:8px;
+  --sh:0 1px 2px rgba(16,24,20,.05), 0 12px 32px rgba(16,24,20,.06);
+  --sh-sm:0 1px 2px rgba(16,24,20,.04), 0 4px 12px rgba(16,24,20,.05);
+  --sidebar-w:256px; --topbar-h:68px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer;border:none;background:none;color:inherit}
+ul{list-style:none}svg{display:block}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#D6E0DA;border-radius:20px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#C1CFC7}
+
+.madar-logo{display:block}
+.madar-logo .m-letter{fill:var(--primary)}
+.madar-logo .orbit{stroke:var(--mint);stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:var(--r-sm);background:var(--surface);color:var(--text);border:1px solid var(--border);font-size:14px;font-weight:600;white-space:nowrap;transition:.15s}
+.btn:hover{background:var(--surface-2);border-color:#D2DED7}
+.btn:active{transform:translateY(1px)}
+.btn .ic{width:17px;height:17px}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:var(--primary-hi);border-color:var(--primary-hi)}
+.btn-mint{background:var(--mint-soft);color:var(--mint-ink);border-color:var(--mint-line)}
+.btn-mint:hover{background:rgba(105,217,173,.22)}
+.btn-ghost{background:transparent;border-color:var(--border);color:var(--text-2)}
+.btn-ghost:hover{background:var(--surface-2);color:var(--text)}
+.btn-danger{background:var(--danger-soft);color:#B0392E;border-color:rgba(209,67,56,.24)}
+.btn-warn{background:var(--warn-soft);color:#9C6A16;border-color:rgba(201,138,31,.26)}
+.btn-sm{height:32px;padding:0 12px;font-size:13px;border-radius:var(--r-xs);gap:6px}
+.btn-sm .ic{width:15px;height:15px}
+.btn-lg{height:46px;padding:0 22px;font-size:15px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.icon-btn{width:40px;height:40px;border-radius:var(--r-sm);display:grid;place-items:center;color:var(--text-2);transition:.15s;position:relative;flex:none}
+.icon-btn:hover{background:var(--surface-2);color:var(--text)}
+.icon-btn .ic{width:19px;height:19px}
+.icon-btn.sm{width:32px;height:32px}
+.icon-btn.sm .ic{width:16px;height:16px}
+
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.ok{background:var(--ok-soft);color:#0E7B56}
+.badge.wait{background:var(--info-soft);color:#1E6D96}
+.badge.prog{background:var(--mint-soft);color:#0E7B56}
+.badge.warn{background:var(--warn-soft);color:#9C6A16}
+.badge.dang{background:var(--danger-soft);color:#B0392E}
+.badge.mute{background:var(--surface-3);color:var(--muted)}
+
+.chip{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--text-2);font-size:12.5px;font-weight:600;transition:.15s;cursor:pointer}
+.chip:hover{border-color:var(--mint-line);color:var(--mint-ink)}
+.chip.active{background:var(--primary-soft);border-color:var(--mint-line);color:var(--primary)}
+
+.field{display:flex;flex-direction:column;gap:7px}
+.field>label{font-size:13px;font-weight:600;color:var(--text-2)}
+.input,.select,.textarea{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;font-size:14px;outline:none;transition:.15s}
+.input::placeholder,.textarea::placeholder{color:var(--muted-2)}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,154,107,.13)}
+.textarea{resize:vertical;min-height:88px;line-height:1.7}
+.select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2377897F' stroke-width='2' stroke-linecap='round'><path d='M4 6l4 4 4-4'/></svg>");background-repeat:no-repeat;background-position:left 14px center;padding-left:38px}
+.check{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;color:var(--text-2);cursor:pointer}
+.check input{appearance:none;width:19px;height:19px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface);transition:.15s;flex:none}
+.check input:checked{background:var(--primary);border-color:var(--primary);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M2 6.5l3 3 5-6'/></svg>");background-repeat:no-repeat;background-position:center}
+
+.app{display:flex;height:100vh;overflow:hidden;position:relative}
+
+/* ============================================================
+   SIDEBAR — RESPONSIVE
+   ============================================================ */
+.sidebar{
+  width:var(--sidebar-w);flex:none;
+  background:linear-gradient(180deg,#0D1612,#0A120E);
+  display:flex;flex-direction:column;
+  position:relative;z-index:60;
+  transition:transform .3s cubic-bezier(.4,0,.2,1), width .3s ease;
+}
+.sidebar::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px 240px at 100% 0%,rgba(21,154,107,.12),transparent 70%)}
+.sb-brand{display:flex;align-items:center;gap:12px;height:var(--topbar-h);padding:0 20px;flex:none;border-bottom:1px solid rgba(255,255,255,.05);position:relative;z-index:1}
+.sb-brand .madar-logo{width:40px;height:40px;flex:none}
+.brand-txt{display:flex;flex-direction:column;line-height:1.1}
+.brand-txt .en{font-size:16px;font-weight:800;letter-spacing:.16em;color:#F2F5F3}
+.brand-txt .ar{font-size:11.5px;font-weight:600;color:#7E9189;letter-spacing:.04em}
+.sb-close{display:none;margin-inline-start:auto;width:34px;height:34px;border-radius:10px;color:#BAC8C1;background:rgba(255,255,255,.06);place-items:center}
+.sb-close .ic{width:18px;height:18px;margin:auto}
+.sb-close:hover{background:rgba(255,255,255,.12);color:#fff}
+
+.sb-nav{flex:1;overflow-y:auto;padding:14px 12px;position:relative;z-index:1}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-color:transparent}
+.sb-label{font-size:11px;font-weight:700;color:#55675E;letter-spacing:.1em;padding:0 12px;margin:16px 0 8px}
+.sb-label:first-child{margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:var(--r-sm);color:#BAC8C1;font-size:14.5px;font-weight:600;cursor:pointer;transition:.14s;position:relative;margin-bottom:2px}
+.nav-item .ic{width:19px;height:19px;flex:none;color:#6E8178;transition:.14s}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#F2F5F3}
+.nav-item:hover .ic{color:#BAC8C1}
+.nav-item.active{background:rgba(105,217,173,.12);color:var(--mint)}
+.nav-item.active .ic{color:var(--mint)}
+.nav-item.active::before{content:'';position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:3px;height:22px;border-radius:3px;background:var(--mint)}
+.nav-count{margin-inline-start:auto;background:rgba(255,255,255,.08);color:#BAC8C1;font-size:11.5px;font-weight:700;height:21px;min-width:21px;padding:0 6px;border-radius:11px;display:grid;place-items:center}
+.nav-item.active .nav-count{background:rgba(105,217,173,.2);color:var(--mint)}
+.sb-foot{padding:14px;border-top:1px solid rgba(255,255,255,.05);position:relative;z-index:1}
+.sb-user{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;transition:.15s}
+.sb-user:hover{background:rgba(255,255,255,.05)}
+.avatar{width:38px;height:38px;border-radius:12px;flex:none;background:linear-gradient(140deg,var(--primary),#0E6B4A);display:grid;place-items:center;font-size:13px;font-weight:700;color:#EAFFF6}
+.sb-user .nm{font-size:13.5px;font-weight:700;line-height:1.3;color:#F2F5F3}
+.sb-user .rl{font-size:11.5px;color:#7E9189}
+
+/* Backdrop for mobile */
+.sb-backdrop{
+  position:fixed;inset:0;
+  background:rgba(6,11,9,.5);
+  backdrop-filter:blur(3px);
+  z-index:55;
+  opacity:0;visibility:hidden;transition:.25s;
+}
+.sb-backdrop.show{opacity:1;visibility:visible}
+
+/* Hamburger */
+.hamburger{
+  display:none;
+  width:42px;height:42px;border-radius:12px;
+  background:var(--surface-2);border:1px solid var(--border);
+  align-items:center;justify-content:center;
+  color:var(--text);transition:.15s;flex:none;
+}
+.hamburger:hover{background:var(--surface-3)}
+.hamburger .ic{width:20px;height:20px}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{height:var(--topbar-h);flex:none;display:flex;align-items:center;gap:12px;padding:0 22px;background:var(--surface);border-bottom:1px solid var(--border-soft);position:relative;z-index:15}
+.page-head{display:flex;flex-direction:column;min-width:120px}
+.page-title{font-size:16px;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.page-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.search{flex:1;max-width:440px;position:relative;margin-inline-start:8px}
+.search .ic{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--muted);pointer-events:none}
+.search input{width:100%;height:40px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);padding:0 42px 0 70px;color:var(--text);font-size:13.5px;outline:none;transition:.15s}
+.search input::placeholder{color:var(--muted-2)}
+.search input:focus{background:var(--surface);border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,154,107,.12)}
+.kbd{position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;gap:3px;pointer-events:none}
+.kbd span{font-size:10.5px;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+
+.top-actions{display:flex;align-items:center;gap:6px;margin-inline-start:auto}
+
+.live-clock{display:flex;align-items:center;gap:8px;height:38px;padding:0 13px;border-radius:12px;background:linear-gradient(135deg,#0D1F18,#162C22);color:#F2F5F3;border:1px solid rgba(105,217,173,.18);font-variant-numeric:tabular-nums}
+.live-clock .ic{width:15px;height:15px;color:var(--mint)}
+.live-clock .time{font-size:14px;font-weight:800;letter-spacing:.02em}
+.live-clock .date{font-size:10px;color:#7E9189;font-weight:600;line-height:1.1}
+.live-clock .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(105,217,173,.55)}70%{box-shadow:0 0 0 6px rgba(105,217,173,0)}100%{box-shadow:0 0 0 0 rgba(105,217,173,0)}}
+
+.net{display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:20px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;transition:.15s;position:relative}
+.net:hover{border-color:#CFDDD5;background:var(--surface)}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 0 rgba(21,154,107,.55);animation:pulse 2.4s infinite}
+.pulse-dot.warn{background:var(--warn);box-shadow:0 0 0 0 rgba(201,138,31,.55)}
+
+.role-switch{display:flex;align-items:center;gap:8px;height:36px;padding:0 11px;border-radius:12px;background:var(--mint-soft);border:1px solid var(--mint-line);font-size:12px;font-weight:700;color:var(--mint-ink);cursor:pointer;transition:.15s;position:relative}
+.role-switch:hover{background:rgba(105,217,173,.22)}
+.role-switch .ic{width:14px;height:14px}
+
+.popover{position:absolute;top:calc(100% + 10px);left:0;width:280px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:8px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:.16s;z-index:60}
+.popover.open{opacity:1;visibility:visible;transform:translateY(0)}
+.pop-head{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;padding:8px 10px 6px}
+.pop-row{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r-xs);font-size:13px;cursor:pointer;transition:.15s}
+.pop-row:hover{background:var(--surface-2)}
+.pop-row .ic{width:17px;height:17px;color:var(--muted);flex:none}
+.pop-row .val{margin-inline-start:auto;font-size:12px;font-weight:600;color:var(--text-2)}
+.pop-row.active{background:var(--mint-soft);color:var(--mint-ink)}
+.pop-row.active .ic{color:var(--primary)}
+.pop-sep{height:1px;background:var(--border-soft);margin:6px 4px}
+
+.content{flex:1;overflow-y:auto;padding:22px 24px 48px;background:radial-gradient(900px 500px at 100% -8%,rgba(21,154,107,.05),transparent 62%),var(--bg)}
+.screen{display:none;animation:fade .22s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.sec-title{font-size:19px;font-weight:700}
+.sec-desc{font-size:12.5px;color:var(--muted)}
+.sec-head .spacer{flex:1}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mt-16{margin-top:16px}.mt-24{margin-top:24px}.mb-16{margin-bottom:16px}
+
+.card{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:20px;position:relative;box-shadow:0 1px 2px rgba(16,24,20,.02)}
+.card.pad-0{padding:0;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.card-head .ttl{font-size:15px;font-weight:700}
+.card-head .sub{font-size:12px;color:var(--muted)}
+.card-head .spacer{flex:1}
+
+.stat{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:18px;position:relative;overflow:hidden;transition:.18s;box-shadow:0 1px 2px rgba(16,24,20,.02)}
+.stat:hover{border-color:var(--mint-line);transform:translateY(-2px);box-shadow:var(--sh-sm)}
+.stat-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.stat-ic{width:38px;height:38px;border-radius:12px;flex:none;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary)}
+.stat-ic .ic{width:19px;height:19px}
+.stat-ic.blue{background:var(--info-soft);color:var(--info)}
+.stat-ic.gold{background:var(--warn-soft);color:var(--warn)}
+.stat-ic.red{background:var(--danger-soft);color:var(--danger)}
+.stat-lbl{font-size:12.5px;color:var(--text-2);font-weight:600}
+.stat-val{font-size:28px;font-weight:800;line-height:1.15}
+.stat-val small{font-size:13px;font-weight:600;color:var(--muted);margin-inline-start:4px}
+.stat-foot{font-size:11.5px;color:var(--muted);margin-top:6px}
+.trend-up{color:var(--primary);font-weight:700}
+.trend-dn{color:var(--danger);font-weight:700}
+
+.qa{display:flex;flex-direction:column;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:16px;transition:.18s;text-align:right;box-shadow:0 1px 2px rgba(16,24,20,.02)}
+.qa:hover{border-color:var(--mint-line);transform:translateY(-2px);box-shadow:var(--sh-sm)}
+.qa .ic-wrap{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary)}
+.qa .ic-wrap .ic{width:18px;height:18px}
+.qa .t{font-size:13.5px;font-weight:700}
+.qa .d{font-size:11.5px;color:var(--muted);line-height:1.5}
+
+.queue-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+.now-card{background:linear-gradient(150deg,#0F2A21,#0C1E17 60%,#0A1712);border-radius:var(--r-lg);padding:22px;position:relative;overflow:hidden;border:1px solid rgba(105,217,173,.14);color:#F2F5F3}
+.now-card::before{content:'';position:absolute;left:-70px;bottom:-90px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(105,217,173,.14)}
+.now-label{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:var(--mint);background:rgba(105,217,173,.13);border:1px solid var(--mint-line);border-radius:20px;padding:4px 12px;position:relative;z-index:1}
+.now-name{font-size:24px;font-weight:800;margin-top:14px;line-height:1.25;color:#F2F5F3;position:relative;z-index:1}
+.now-meta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px;position:relative;z-index:1}
+.now-meta .mi{display:flex;align-items:center;gap:6px;font-size:13px;color:#BAC8C1}
+.now-meta .mi .ic{width:15px;height:15px;color:var(--mint)}
+.now-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;position:relative;z-index:1}
+
+.q-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.q-stat{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:14px;text-align:center}
+.q-stat .n{font-size:22px;font-weight:800;line-height:1.2}
+.q-stat .l{font-size:11.5px;color:var(--muted);font-weight:600}
+
+.q-list{display:flex;flex-direction:column;gap:8px}
+.q-card{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:11px 14px;transition:.15s;position:relative}
+.q-card:hover{border-color:#D2DED7;box-shadow:var(--sh-sm)}
+.q-card.is-current{border-color:var(--mint-line);background:linear-gradient(90deg,var(--mint-soft),var(--surface) 70%)}
+.q-card.is-current::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--primary);border-radius:0 14px 14px 0}
+.q-num{width:38px;height:38px;flex:none;border-radius:11px;background:var(--surface-2);color:var(--text-2);display:grid;place-items:center;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;border:1px solid var(--border-soft);position:relative}
+.q-num.current{background:var(--primary);color:#fff;border-color:var(--primary)}
+.q-num.next{background:var(--mint-soft);color:var(--mint-ink);border-color:var(--mint-line)}
+.q-num small{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:700;background:var(--primary);color:#fff;padding:1px 5px;border-radius:5px;white-space:nowrap}
+.q-info{flex:1;min-width:0}
+.q-name{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.3}
+.q-meta{font-size:11.5px;color:var(--muted);margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+.q-acts{display:flex;gap:6px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.q-time-big{font-size:14px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;min-width:52px;text-align:center;flex:none}
+.q-time-big small{display:block;font-size:10px;font-weight:600;color:var(--muted)}
+.queue-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.queue-legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-inline-end:5px}
+
+/* ============ DOCTOR ============ */
+.doc-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.doc-queue{display:flex;flex-direction:column;gap:14px;position:sticky;top:0}
+.cur-patient{background:linear-gradient(150deg,#0F2A21,#0A1712);border-radius:var(--r-lg);padding:18px;color:#F2F5F3;position:relative;overflow:hidden;border:1px solid rgba(105,217,173,.2)}
+.cur-patient::before{content:'';position:absolute;left:-40px;bottom:-50px;width:160px;height:160px;border-radius:50%;border:1px solid rgba(105,217,173,.14)}
+.cp-label{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--mint);background:rgba(105,217,173,.14);border:1px solid var(--mint-line);border-radius:20px;padding:3px 10px;position:relative;z-index:1}
+.cp-label .live{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 1.6s infinite}
+.cp-row{display:flex;align-items:flex-start;gap:10px;margin-top:12px;position:relative;z-index:1}
+.cp-info{flex:1;min-width:0}
+.cp-name{font-size:17px;font-weight:800;line-height:1.3;color:#F2F5F3}
+.cp-meta{font-size:11.5px;color:#BAC8C1;margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
+.cp-num-badge{width:38px;height:38px;flex:none;border-radius:11px;background:var(--mint);color:#03150E;display:grid;place-items:center;font-weight:800;font-size:16px;position:relative}
+.cp-num-badge small{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;background:#03150E;color:var(--mint);padding:1px 5px;border-radius:5px;white-space:nowrap}
+.cp-actions{display:flex;gap:8px;margin-top:14px;position:relative;z-index:1;flex-wrap:wrap}
+.cp-actions .btn{background:rgba(255,255,255,.1);color:#F2F5F3;border-color:rgba(255,255,255,.15);height:34px;font-size:12.5px}
+.cp-actions .btn:hover{background:rgba(255,255,255,.16)}
+.cp-actions .btn-mint-strong{background:var(--mint);color:#03150E;border-color:var(--mint);font-weight:800}
+
+.next-queue-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:16px;box-shadow:0 1px 2px rgba(16,24,20,.02)}
+.next-queue-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border-soft)}
+.next-queue-title{font-size:13.5px;font-weight:700}
+.next-queue-count{font-size:11px;font-weight:700;background:var(--mint-soft);color:var(--mint-ink);padding:3px 9px;border-radius:20px}
+.next-queue-list{display:flex;flex-direction:column;gap:6px}
+.next-mini{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--r-sm);background:var(--surface-2);border:1px solid transparent;transition:.15s;position:relative}
+.next-mini.is-next{background:var(--primary-soft);border-color:var(--mint-line)}
+.next-mini .num{width:26px;height:26px;flex:none;border-radius:8px;background:var(--surface);color:var(--text-2);display:grid;place-items:center;font-size:12px;font-weight:800;border:1px solid var(--border-soft)}
+.next-mini.is-next .num{background:var(--primary);color:#fff;border-color:var(--primary)}
+.next-mini .info{flex:1;min-width:0}
+.next-mini .nm{font-size:12.5px;font-weight:700;line-height:1.3;color:var(--text)}
+.next-mini .mt{font-size:10.5px;color:var(--muted);margin-top:1px}
+.next-mini .tag{position:absolute;top:-5px;right:8px;font-size:8.5px;font-weight:800;background:var(--mint);color:#03150E;padding:1px 6px;border-radius:5px}
+.empty-mini{padding:16px 10px;text-align:center;font-size:11.5px;color:var(--muted);background:var(--surface-2);border-radius:var(--r-sm)}
+
+.doc-main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.doc-head-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:14px 18px;box-shadow:0 1px 2px rgba(16,24,20,.02)}
+.doc-head-bar .who{font-size:14px;font-weight:700}
+.doc-head-bar .sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+.doc-head-bar .spacer{flex:1}
+
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.doc-tile{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);overflow:hidden;transition:.16s;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,20,.02);display:flex;flex-direction:column}
+.doc-tile:hover{border-color:var(--mint-line);transform:translateY(-3px);box-shadow:var(--sh-sm)}
+.doc-tile-img{width:100%;aspect-ratio:3/4;background:var(--surface-2);position:relative;overflow:hidden;border-bottom:1px solid var(--border-soft)}
+.doc-tile-img svg,.doc-tile-img img{width:100%;height:100%;display:block;object-fit:cover}
+.doc-tile-type{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;letter-spacing:.03em;padding:3px 9px;border-radius:6px;background:var(--primary);color:#fff;z-index:2}
+.doc-tile-type.sonar{background:var(--mint);color:#03150E}
+.doc-tile-type.lab{background:var(--info);color:#fff}
+.doc-tile-type.pdf{background:var(--danger);color:#fff}
+.doc-tile-info{padding:10px 12px;flex:1;display:flex;flex-direction:column;gap:4px}
+.doc-tile-name{font-size:12.5px;font-weight:700;line-height:1.35;word-break:break-word}
+.doc-tile-meta{font-size:10.5px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+.doc-tile-actions{display:flex;gap:2px;padding:8px 10px;border-top:1px solid var(--border-soft);background:var(--surface-2)}
+
+.docs-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:50px 20px;gap:10px;border:1.5px dashed var(--border);border-radius:var(--r-lg);background:var(--surface-2)}
+.docs-empty .ic-wrap{width:60px;height:60px;border-radius:20px;display:grid;place-items:center;background:var(--surface);color:var(--muted);box-shadow:var(--sh-sm)}
+.docs-empty .ic-wrap .ic{width:28px;height:28px}
+.docs-empty .t{font-size:15px;font-weight:700;color:var(--text-2)}
+.docs-empty .d{font-size:12.5px;color:var(--muted);max-width:320px;line-height:1.65}
+
+.upload-cta{display:flex;align-items:center;gap:16px;padding:16px 20px;background:linear-gradient(135deg,var(--mint-soft),rgba(105,217,173,.06));border:1.5px dashed var(--mint-line);border-radius:var(--r-lg);transition:.16s;color:var(--text);width:100%;text-align:right}
+.upload-cta:hover{background:linear-gradient(135deg,rgba(105,217,173,.22),rgba(105,217,173,.08));border-color:var(--primary);transform:translateY(-1px)}
+.upload-cta-icon{width:48px;height:48px;flex:none;border-radius:14px;background:var(--surface);display:grid;place-items:center;box-shadow:var(--sh-sm)}
+.upload-cta-icon .ic{width:22px;height:22px;color:var(--primary)}
+.upload-cta-text{flex:1;min-width:0}
+.upload-cta-text .t{font-size:14.5px;font-weight:800;color:var(--text)}
+.upload-cta-text .d{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+.upload-sources{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.source-card{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:var(--r);background:var(--surface-2);border:1.5px solid var(--border-soft);text-align:right;transition:.16s;cursor:pointer}
+.source-card:hover{border-color:var(--mint-line);background:var(--surface);box-shadow:var(--sh-sm);transform:translateY(-2px)}
+.source-card .s-icon{width:46px;height:46px;flex:none;border-radius:13px;display:grid;place-items:center;background:var(--surface);box-shadow:var(--sh-sm)}
+.source-card .s-icon .ic{width:22px;height:22px}
+.source-card .s-title{font-size:13.5px;font-weight:700;margin-bottom:3px}
+.source-card .s-desc{font-size:11.5px;color:var(--muted);line-height:1.5}
+
+.type-chips{display:flex;flex-wrap:wrap;gap:6px}
+.type-chip{padding:7px 13px;border-radius:20px;background:var(--surface-2);border:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text-2);transition:.15s;cursor:pointer}
+.type-chip:hover{border-color:var(--mint-line);color:var(--mint-ink)}
+.type-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+.camera-view{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:#0D1F18;padding:16px}
+.camera-frame{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#162C22,#0A1712);border-radius:12px;display:grid;place-items:center;margin-bottom:14px;overflow:hidden}
+.camera-corner{position:absolute;width:24px;height:24px;border-color:var(--mint);border-style:solid;border-width:0}
+.camera-corner.tl{top:14px;right:14px;border-top-width:3px;border-right-width:3px;border-top-right-radius:6px}
+.camera-corner.tr{top:14px;left:14px;border-top-width:3px;border-left-width:3px;border-top-left-radius:6px}
+.camera-corner.bl{bottom:14px;right:14px;border-bottom-width:3px;border-right-width:3px;border-bottom-right-radius:6px}
+.camera-corner.br{bottom:14px;left:14px;border-bottom-width:3px;border-left-width:3px;border-bottom-left-radius:6px}
+.camera-hint{color:#7E9189;font-size:13px;font-weight:600;text-align:center;padding:20px}
+.camera-hint .big{font-size:36px;display:block;margin-bottom:6px;opacity:.6}
+
+.captured-view{border-radius:var(--r-lg);overflow:hidden;border:1.5px solid var(--mint-line);background:var(--mint-soft);padding:22px;text-align:center;margin-bottom:10px}
+.captured-view .ok-icon{width:56px;height:56px;border-radius:18px;background:var(--primary);color:#fff;display:grid;place-items:center;margin:0 auto 12px}
+.captured-view .ok-icon .ic{width:28px;height:28px}
+.captured-view .cap-t{font-size:15px;font-weight:800;color:var(--text)}
+.captured-view .cap-d{font-size:12px;color:var(--muted);margin-top:4px}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{text-align:right;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;padding:11px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:12px 16px;border-bottom:1px solid var(--border-soft);vertical-align:middle}
+tbody tr{transition:.13s;cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:none}
+.cell-name{display:flex;align-items:center;gap:11px}
+.cell-name .av{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;background:var(--surface-3);color:var(--text-2);font-size:12px;font-weight:700}
+.cell-name .nm{font-weight:700;font-size:13.5px}
+.cell-name .id{font-size:11px;color:var(--muted)}
+
+.timeline{position:relative;padding-inline-start:26px}
+.timeline::before{content:'';position:absolute;right:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--mint-line),var(--border) 70%,transparent)}
+.tl-item{position:relative;padding-bottom:18px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;right:-26px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--primary);z-index:1}
+.tl-dot.mute{border-color:#C4D0CA}.tl-dot.warn{border-color:var(--warn)}
+.tl-body{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:14px 16px;transition:.16s;cursor:pointer}
+.tl-body:hover{border-color:var(--mint-line);box-shadow:var(--sh-sm)}
+.tl-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.tl-date{font-size:12px;font-weight:700;color:var(--primary)}
+.tl-title{font-size:14px;font-weight:700}
+.tl-text{font-size:13px;color:var(--text-2);margin-top:4px;line-height:1.7}
+
+.alert-box{display:flex;align-items:flex-start;gap:11px;border-radius:var(--r-sm);padding:12px 14px;font-size:13px;background:var(--danger-soft);border:1px solid rgba(209,67,56,.2);color:#9E3329}
+.alert-box.warn{background:var(--warn-soft);border-color:rgba(201,138,31,.22);color:#8A5E13}
+.alert-box.info{background:var(--info-soft);border-color:rgba(45,127,176,.22);color:#1E6D96}
+.alert-box .ic{width:18px;height:18px;flex:none;margin-top:2px}
+
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.form-grid .full{grid-column:1/-1}
+
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.info-box{background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:12px 14px}
+.info-box .k{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:3px}
+.info-box .v{font-size:14px;font-weight:700}
+
+/* LOGIN */
+.login{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(900px 620px at 80% 8%,rgba(21,154,107,.10),transparent 60%),radial-gradient(700px 520px at 8% 92%,rgba(105,217,173,.10),transparent 62%),linear-gradient(180deg,#F6FAF8,#EEF4F1);overflow:hidden;z-index:100;padding:20px}
+.login.off{display:none}
+.orbit-bg{position:absolute;border-radius:50%;border:1px solid rgba(21,154,107,.13);pointer-events:none}
+.ob1{width:780px;height:780px;top:-320px;left:-240px}
+.ob2{width:520px;height:520px;top:-180px;left:-100px;border-color:rgba(21,154,107,.09)}
+.ob3{width:920px;height:920px;bottom:-500px;right:-320px;border-color:rgba(105,217,173,.16)}
+.o-dot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--primary);box-shadow:0 0 24px rgba(21,154,107,.5);top:148px;left:104px}
+.login-card{width:480px;max-width:100%;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:34px 34px 26px;box-shadow:0 2px 4px rgba(16,24,20,.03), 0 30px 60px -20px rgba(16,24,20,.15);position:relative;z-index:2}
+.login-brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.login-brand .madar-logo{width:60px;height:60px;flex:none}
+.login-brand .en{font-size:22px;font-weight:800;letter-spacing:.16em;color:var(--ink)}
+.login-brand .ar{font-size:12.5px;color:var(--muted);font-weight:600}
+.login-title{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--ink)}
+.login-sub{font-size:13.5px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.quick-roles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.quick-role{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:var(--r);background:var(--surface-2);border:1.5px solid transparent;font-size:11.5px;font-weight:700;color:var(--text-2);transition:.15s;cursor:pointer}
+.quick-role:hover{border-color:var(--mint-line);background:var(--primary-soft);color:var(--primary);transform:translateY(-2px)}
+.quick-role .avatar{width:36px;height:36px;border-radius:11px;font-size:12px}
+.login-form{display:flex;flex-direction:column;gap:16px}
+.login-foot{margin-top:22px;padding-top:18px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:10px}
+.status-line{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-2)}
+.status-line .sp{margin-inline-start:auto;font-weight:700;color:var(--primary)}
+.status-line .sp.warn{color:var(--warn)}
+.login-note{text-align:center;font-size:11px;color:var(--muted-2);margin-top:16px;line-height:1.7}
+
+.overlay{position:fixed;inset:0;background:rgba(16,24,20,.55);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:200;padding:24px;opacity:0;visibility:hidden;transition:.18s}
+.overlay.open{opacity:1;visibility:visible}
+.modal{width:560px;max-width:100%;max-height:88vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:0 30px 60px -20px rgba(16,24,20,.3);transform:translateY(12px) scale(.985);transition:.2s}
+.overlay.open .modal{transform:none}
+.modal.wide{width:720px}
+.modal-head{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid var(--border-soft);position:sticky;top:0;background:var(--surface);z-index:2}
+.modal-head .t{font-size:16px;font-weight:700}
+.modal-head .s{font-size:12px;color:var(--muted)}
+.modal-head .x{margin-inline-start:auto}
+.modal-body{padding:22px 24px}
+.modal-foot{display:flex;gap:10px;justify-content:flex-start;padding:16px 24px;border-top:1px solid var(--border-soft);position:sticky;bottom:0;background:var(--surface)}
+.modal-foot .end{margin-inline-start:auto;display:flex;gap:10px}
+
+.toasts{position:fixed;bottom:26px;left:26px;z-index:300;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-inline-start:3px solid var(--primary);border-radius:var(--r);padding:12px 15px;min-width:280px;box-shadow:0 12px 30px -10px rgba(16,24,20,.22);font-size:13px;font-weight:600;animation:toastIn .25s ease;pointer-events:auto;color:var(--ink)}
+.toast.err{border-inline-start-color:var(--danger)}
+.toast.warn{border-inline-start-color:var(--warn)}
+.toast.info{border-inline-start-color:var(--info)}
+.toast .ic{width:18px;height:18px;color:var(--primary);flex:none}
+.toast.err .ic{color:var(--danger)}
+.toast.warn .ic{color:var(--warn)}
+.toast.info .ic{color:var(--info)}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.empty-slot{display:flex;align-items:center;justify-content:center;padding:22px;border:1.5px dashed var(--border);border-radius:var(--r);color:var(--muted);font-size:12.5px;font-weight:600;background:var(--surface-2)}
+
+.set-item{display:flex;align-items:center;gap:11px;height:42px;padding:0 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--text-2);cursor:pointer;transition:.14s}
+.set-item .ic{width:17px;height:17px;color:var(--muted)}
+.set-item:hover{background:var(--surface-2);color:var(--text)}
+.set-item.active{background:var(--primary-soft);color:var(--primary)}
+.set-item.active .ic{color:var(--primary)}
+
+/* ============================================================
+   RESPONSIVE — THE MAIN FIX
+   ============================================================ */
+
+/* Tablet — collapse sidebar to icon-only, prevent overlay */
+@media (max-width:1024px){
+  :root{--sidebar-w:80px}
+  .brand-txt,.sb-label,.nav-item span:not(.nav-count),.sb-user .txt{display:none}
+  .nav-item{justify-content:center;padding:0;height:46px}
+  .nav-item.active::before{display:none}
+  .nav-count{position:absolute;top:6px;left:8px;margin:0;height:18px;min-width:18px;font-size:10px;padding:0 5px}
+  .sb-brand{justify-content:center;padding:0}
+  .sb-brand .madar-logo{width:36px;height:36px}
+  .sb-user{justify-content:center;padding:8px}
+  .sb-foot{padding:10px}
+
+  .doc-layout{grid-template-columns:1fr}
+  .doc-queue{position:static}
+  .queue-wrap{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .live-clock .date{display:none}
+  .search{max-width:280px}
+}
+
+/* Mobile — sidebar becomes drawer */
+@media (max-width:768px){
+  :root{--topbar-h:60px}
+
+  .sidebar{
+    position:fixed;
+    top:0;bottom:0;right:0;
+    width:280px;
+    transform:translateX(100%);
+    z-index:70;
+    box-shadow:-20px 0 40px rgba(0,0,0,.3);
+  }
+  .sidebar.open{transform:translateX(0)}
+
+  /* Restore full sidebar content inside drawer */
+  .sidebar .brand-txt,
+  .sidebar .sb-label,
+  .sidebar .nav-item span:not(.nav-count),
+  .sidebar .sb-user .txt{display:block}
+  .sidebar .nav-item{justify-content:flex-start;padding:0 12px;height:46px}
+  .sidebar .nav-item.active::before{display:block}
+  .sidebar .nav-count{position:static;margin-inline-start:auto;height:22px;min-width:22px;font-size:11.5px}
+  .sidebar .sb-brand{justify-content:flex-start;padding:0 16px}
+  .sidebar .sb-user{justify-content:flex-start;padding:9px 10px}
+  .sb-close{display:grid}
+  .hamburger{display:flex}
+
+  /* Hide some topbar items on mobile */
+  .live-clock{display:none}
+  .role-switch{display:none}
+  .net span:not(.pulse-dot):not(.ic){display:none}
+  .net{padding:0 10px;width:36px;justify-content:center}
+  .net .ic{display:none}
+
+  .topbar{padding:0 14px;gap:8px}
+  .page-head{min-width:0;flex:1}
+  .page-title{font-size:15px}
+  .page-sub{display:none}
+  .search{display:none}
+
+  .content{padding:16px 14px 40px}
+
+  .sec-title{font-size:17px}
+  .sec-desc{font-size:11.5px}
+
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .grid[style*="repeat(5"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .grid[style*="repeat(auto-fit"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+
+  .form-grid{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-roles{grid-template-columns:repeat(2,1fr)}
+  .upload-sources{grid-template-columns:1fr}
+
+  /* Queue cards - stack vertically */
+  .q-card{flex-wrap:wrap;gap:10px;padding:12px}
+  .q-acts{width:100%;justify-content:flex-start;margin-top:6px;padding-top:10px;border-top:1px solid var(--border-soft)}
+  .q-acts .btn{flex:1;justify-content:center}
+  .q-acts .btn:only-child{flex:0 0 auto}
+  .q-time-big{min-width:auto}
+  .q-num{width:34px;height:34px;font-size:13px}
+
+  .now-card{padding:18px}
+  .now-name{font-size:20px}
+  .now-actions .btn{flex:1;min-width:calc(50% - 5px);justify-content:center;height:38px;font-size:13px}
+
+  .q-stats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .q-stat{padding:11px}
+  .q-stat .n{font-size:19px}
+  .q-stat .l{font-size:10.5px}
+
+  .docs-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .doc-tile-info{padding:8px 10px}
+  .doc-tile-name{font-size:11.5px}
+  .doc-tile-actions{padding:6px 8px}
+  .doc-tile-actions .icon-btn{width:28px;height:28px}
+
+  .card{padding:16px;border-radius:14px}
+  .card-head .ttl{font-size:14px}
+
+  .doc-head-bar{padding:12px 14px;gap:10px}
+  .doc-head-bar .who{font-size:13px}
+
+  .upload-cta{padding:14px 16px;gap:12px}
+  .upload-cta-icon{width:42px;height:42px;border-radius:12px}
+  .upload-cta-text .t{font-size:13.5px}
+  .upload-cta-text .d{font-size:11px}
+
+  .q-stats.mt-16{margin-top:12px}
+
+  .modal{width:100%;max-height:92vh;border-radius:18px}
+  .modal.wide{width:100%}
+  .modal-body{padding:18px}
+  .modal-head{padding:16px 18px}
+  .modal-foot{padding:14px 18px;flex-wrap:wrap}
+  .modal-foot .end{width:100%;margin-inline-start:0}
+  .modal-foot .end .btn{flex:1}
+
+  .toasts{left:12px;right:12px;bottom:16px}
+  .toast{min-width:0;width:100%}
+
+  .cal-week{font-size:10px}
+  .cal-week .h{padding:8px 4px;font-size:11px}
+  .cal-slot{height:52px}
+
+  .table-wrap table{font-size:12.5px}
+  thead th,tbody td{padding:10px 12px}
+}
+
+/* Very small phones */
+@media (max-width:420px){
+  .grid[style*="repeat(5"],.grid[style*="repeat(auto-fit"]{grid-template-columns:1fr !important}
+  .q-stats{grid-template-columns:repeat(3,1fr)}
+  .quick-roles{grid-template-columns:repeat(2,1fr)}
+  .now-actions .btn{min-width:100%}
+}
+
+/* Prevent body scroll when drawer is open */
+body.drawer-open{overflow:hidden}
+</style>
+</head>
+<body>
+
+<template id="logoTpl">
+  <svg class="madar-logo" viewBox="0 0 100 100" aria-label="MADAR">
+    <path class="m-letter" d="M20 80 V20 H34 L50 52 L66 20 H80 V80 H64 V44 L50 70 L36 44 V80 Z"/>
+    <ellipse class="orbit" cx="50" cy="50" rx="44" ry="15" transform="rotate(-22 50 50)"/>
+  </svg>
+</template>
+
+<!-- LOGIN -->
+<div class="login" id="loginScreen">
+  <div class="orbit-bg ob1"></div>
+  <div class="orbit-bg ob2"></div>
+  <div class="orbit-bg ob3"></div>
+  <div class="o-dot"></div>
+
+  <div class="login-card">
+    <div class="login-brand">
+      <span id="loginLogoSlot"></span>
+      <div><div class="en">MADAR</div><div class="ar">مدار — نظام إدارة العيادة</div></div>
+    </div>
+    <h1 class="login-title">تسجيل الدخول</h1>
+    <p class="login-sub">اختر حساباً للدخول السريع، أو أدخل بياناتك يدوياً</p>
+
+    <div class="quick-roles">
+      <button class="quick-role" onclick="doLogin('admin')"><div class="avatar" style="background:linear-gradient(140deg,#0D1F18,#26362E)">نص</div><span>مدير النظام</span></button>
+      <button class="quick-role" onclick="doLogin('doctor')"><div class="avatar">أع</div><span>طبيب</span></button>
+      <button class="quick-role" onclick="doLogin('reception')"><div class="avatar" style="background:linear-gradient(140deg,#2D7FB0,#1E6D96)">سم</div><span>استقبال</span></button>
+      <button class="quick-role" onclick="doLogin('nurse')"><div class="avatar" style="background:linear-gradient(140deg,#69D9AD,#159A6B)">أح</div><span>تمريض</span></button>
+    </div>
+
+    <form class="login-form" onsubmit="event.preventDefault();doLogin('doctor');">
+      <div class="field"><label>اسم المستخدم</label><input class="input" value="dr.ahmed"></div>
+      <div class="field"><label>كلمة المرور</label><input class="input" type="password" value="clinic123"></div>
+      <div class="row" style="justify-content:space-between">
+        <label class="check"><input type="checkbox" checked> تذكر هذا الجهاز</label>
+        <button type="button" class="btn btn-sm btn-ghost">نسيت كلمة المرور؟</button>
+      </div>
+      <button class="btn btn-primary btn-lg btn-block" type="submit"><span class="ic" data-ic="logout"></span> دخول إلى النظام</button>
+    </form>
+
+    <div class="login-foot">
+      <div class="status-line"><span class="pulse-dot"></span> شبكة العيادة المحلية <span class="sp">متصلة</span></div>
+      <div class="status-line"><span class="pulse-dot warn"></span> الإنترنت <span class="sp warn">غير متاح</span></div>
+      <div class="status-line"><span class="pulse-dot"></span> قاعدة البيانات <span class="sp">متصلة</span></div>
+    </div>
+    <div class="login-note">الإصدار 2.4.1 · MADAR Clinic Systems</div>
+  </div>
+</div>
+
+<!-- BACKDROP -->
+<div class="sb-backdrop" id="sbBackdrop" onclick="closeSidebar()"></div>
+
+<!-- APP -->
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <span id="sbLogoSlot"></span>
+      <div class="brand-txt"><span class="en">MADAR</span><span class="ar">مدار</span></div>
+      <button class="sb-close" onclick="closeSidebar()"><span class="ic" data-ic="x"></span></button>
+    </div>
+    <nav class="sb-nav" id="sbNav"></nav>
+    <div class="sb-foot">
+      <div class="sb-user" onclick="toast('إدارة الحساب من الإعدادات','info')">
+        <div class="avatar" id="sbAvatar">أع</div>
+        <div class="txt"><div class="nm" id="sbName">د. أحمد عبدالناصر</div><div class="rl" id="sbRole">طبيب</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger" onclick="openSidebar()" aria-label="فتح القائمة">
+        <span class="ic" data-ic="menu"></span>
+      </button>
+
+      <div class="page-head">
+        <div class="page-title" id="pageTitle">لوحة التحكم</div>
+        <div class="page-sub" id="pageSub">نظرة عامة</div>
+      </div>
+
+      <div class="search">
+        <span class="ic" data-ic="search"></span>
+        <input placeholder="ابحث عن مريض…">
+        <div class="kbd"><span>Ctrl</span><span>K</span></div>
+      </div>
+
+      <div class="top-actions">
+        <div class="live-clock">
+          <span class="dot"></span>
+          <span class="ic" data-ic="clock"></span>
+          <div>
+            <div class="time" id="liveTime">--:--:--</div>
+            <div class="date" id="liveDate">—</div>
+          </div>
+        </div>
+
+        <div class="role-switch" onclick="toggleRole(event)">
+          <span class="ic" data-ic="user"></span>
+          <span id="roleSwitchLabel">طبيب</span>
+          <span class="ic" data-ic="chevron-down"></span>
+          <div class="popover" id="rolePop" onclick="event.stopPropagation()">
+            <div class="pop-head">تبديل الدور (تجريبي)</div>
+            <div class="pop-row" data-role="admin" onclick="doLogin('admin')"><span class="ic" data-ic="settings"></span> مدير النظام <span class="val">كل الصلاحيات</span></div>
+            <div class="pop-row" data-role="doctor" onclick="doLogin('doctor')"><span class="ic" data-ic="steth"></span> طبيب <span class="val">طبي</span></div>
+            <div class="pop-row" data-role="reception" onclick="doLogin('reception')"><span class="ic" data-ic="queue"></span> استقبال <span class="val">طابور</span></div>
+            <div class="pop-row" data-role="nurse" onclick="doLogin('nurse')"><span class="ic" data-ic="check"></span> تمريض <span class="val">محدود</span></div>
+          </div>
+        </div>
+
+        <div class="net" onclick="togglePopover(event)">
+          <span class="pulse-dot"></span>
+          <span>الشبكة</span>
+          <span class="ic" data-ic="chevron-down" style="width:14px;height:14px;color:var(--muted)"></span>
+          <div class="popover" id="netPop" onclick="event.stopPropagation()">
+            <div class="pop-head">حالة النظام</div>
+            <div class="pop-row"><span class="ic" data-ic="wifi"></span> شبكة العيادة <span class="val" style="color:var(--primary)">متصلة</span></div>
+            <div class="pop-row"><span class="ic" data-ic="grid"></span> الخادم <span class="val" style="color:var(--primary)">يعمل</span></div>
+            <div class="pop-row"><span class="ic" data-ic="db"></span> قاعدة البيانات <span class="val" style="color:var(--primary)">متصلة</span></div>
+            <div class="pop-sep"></div>
+            <div class="pop-row"><span class="ic" data-ic="alert"></span> الإنترنت <span class="val" style="color:var(--warn)">غير متاح</span></div>
+          </div>
+        </div>
+
+        <button class="icon-btn" onclick="toast('لديك 3 إشعارات','info')"><span class="ic" data-ic="bell"></span><span style="position:absolute;top:8px;left:8px;width:8px;height:8px;border-radius:50%;background:var(--danger);border:2px solid var(--surface)"></span></button>
+        <button class="icon-btn" onclick="logout()" title="خروج"><span class="ic" data-ic="logout"></span></button>
+      </div>
+    </header>
+
+    <div class="content" id="content">
+
+      <!-- DASHBOARD -->
+      <section class="screen active" id="screen-dashboard">
+        <div class="sec-head">
+          <div><div class="sec-title" id="dashGreeting">مرحباً د. أحمد</div><div class="sec-desc" id="dashSub">—</div></div>
+        </div>
+
+        <div class="grid g4">
+          <div class="stat"><div class="stat-top"><div class="stat-ic"><span class="ic" data-ic="user"></span></div><div class="stat-lbl">المرضى اليوم</div></div><div class="stat-val">42</div><div class="stat-foot"><span class="trend-up">▲ 12%</span></div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic blue"><span class="ic" data-ic="calendar"></span></div><div class="stat-lbl">الحجوزات</div></div><div class="stat-val">36</div><div class="stat-foot">6 بدون تأكيد</div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic gold"><span class="ic" data-ic="clock"></span></div><div class="stat-lbl">في الانتظار</div></div><div class="stat-val" id="dashWaiting">0</div><div class="stat-foot">متوسط 11 د</div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic"><span class="ic" data-ic="steth"></span></div><div class="stat-lbl">داخل الكشف</div></div><div class="stat-val" id="dashCurrent">0</div><div class="stat-foot">الحالي</div></div>
+        </div>
+
+        <div class="sec-head mt-24"><div><div class="sec-title">إجراءات سريعة</div></div></div>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+          <button class="qa" onclick="openModal('modalNewPatient')"><span class="ic-wrap"><span class="ic" data-ic="user"></span></span><div><div class="t">تسجيل مريض</div><div class="d">ملف جديد</div></div></button>
+          <button class="qa" onclick="openModal('modalNewAppt')"><span class="ic-wrap"><span class="ic" data-ic="calendar"></span></span><div><div class="t">حجز جديد</div><div class="d">رقم دور تلقائي</div></div></button>
+          <button class="qa" onclick="go('doctor')"><span class="ic-wrap"><span class="ic" data-ic="steth"></span></span><div><div class="t">شاشة الطبيب</div><div class="d">أوراق المريضة</div></div></button>
+          <button class="qa" onclick="go('reception')"><span class="ic-wrap"><span class="ic" data-ic="queue"></span></span><div><div class="t">الاستقبال</div><div class="d">الطابور المباشر</div></div></button>
+        </div>
+
+        <div class="grid mt-24" style="grid-template-columns:1.3fr 1fr;align-items:start">
+          <div class="card pad-0">
+            <div class="card-head" style="padding:18px 20px 0;margin-bottom:14px">
+              <div><div class="ttl">طابور اليوم</div><div class="sub">أقرب المرضى</div></div>
+              <div class="spacer"></div>
+              <button class="btn btn-sm btn-ghost" onclick="go('reception')">عرض الكل</button>
+            </div>
+            <div style="padding:0 20px 20px"><div class="q-list" id="dashQueue"></div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div><div class="ttl">متابعات اليوم</div><div class="sub">9 مجدولة</div></div></div>
+            <div class="q-list">
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px">
+                <div style="font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center">نورة عبد الرحمن <span class="badge ok">مكتملة</span></div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:2px">10:30 · متابعة حمل — الأسبوع 24</div>
+              </div>
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px">
+                <div style="font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center">هدى الشريف <span class="badge warn">متأخرة</span></div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:2px">09:00 · مراجعة تحاليل</div>
+              </div>
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px">
+                <div style="font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center">أمينة خالد <span class="badge wait">قادمة</span></div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:2px">13:15 · متابعة بعد عملية</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECEPTION -->
+      <section class="screen" id="screen-reception">
+        <div class="sec-head">
+          <div><div class="sec-title">الاستقبال — الطابور المباشر</div><div class="sec-desc" id="receptionSub">—</div></div>
+          <div class="spacer"></div>
+          <div class="queue-legend">
+            <span><i style="background:var(--primary)"></i> داخل الكشف</span>
+            <span><i style="background:var(--info)"></i> في الانتظار</span>
+            <span><i style="background:var(--ok)"></i> مكتملة</span>
+          </div>
+        </div>
+
+        <div class="queue-wrap">
+          <div>
+            <div id="receptionCurrent"></div>
+            <div class="q-stats mt-16">
+              <div class="q-stat"><div class="n" style="color:var(--info)" id="statWaiting">0</div><div class="l">في الانتظار</div></div>
+              <div class="q-stat"><div class="n" style="color:var(--primary)" id="statCurrent">0</div><div class="l">داخل الكشف</div></div>
+              <div class="q-stat"><div class="n" style="color:var(--ok)" id="statDone">0</div><div class="l">مكتملة</div></div>
+            </div>
+          </div>
+
+          <div class="card pad-0">
+            <div class="card-head" style="padding:18px 20px 0;margin-bottom:14px">
+              <div><div class="ttl">الطابور الكامل</div><div class="sub" id="queueSub">—</div></div>
+              <div class="spacer"></div>
+              <button class="btn btn-sm btn-mint" onclick="openModal('modalNewAppt')"><span class="ic" data-ic="plus"></span> حجز</button>
+            </div>
+            <div style="padding:0 16px 18px"><div class="q-list" id="receptionQueue"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOCTOR -->
+      <section class="screen" id="screen-doctor">
+        <div class="sec-head">
+          <div><div class="sec-title">شاشة الطبيب</div><div class="sec-desc">أوراق المريضة الحالية ظاهرة مباشرة — من الاستقبال</div></div>
+          <div class="spacer"></div>
+          <span class="badge prog"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span> تحديث تلقائي</span>
+        </div>
+
+        <div class="doc-layout">
+          <div class="doc-queue">
+            <div id="doctorCurrent"></div>
+            <div class="next-queue-card">
+              <div class="next-queue-head">
+                <div class="next-queue-title">القادمون</div>
+                <span class="next-queue-count" id="nextCountBadge">0 في الانتظار</span>
+              </div>
+              <div class="next-queue-list" id="doctorNextList"></div>
+            </div>
+          </div>
+
+          <div class="doc-main">
+            <div class="doc-head-bar">
+              <div>
+                <div class="who" id="docWhoName">—</div>
+                <div class="sub" id="docWhoSub">—</div>
+              </div>
+              <div class="spacer"></div>
+              <div class="row" style="gap:6px">
+                <button class="chip active" data-docfilter="all">الكل</button>
+                <button class="chip" data-docfilter="روشتة">روشتات</button>
+                <button class="chip" data-docfilter="سونار">سونار</button>
+                <button class="chip" data-docfilter="تحليل">تحاليل</button>
+              </div>
+            </div>
+
+            <div class="docs-grid" id="doctorDocs"></div>
+
+            <button class="upload-cta" onclick="openUploadFor('current')">
+              <div class="upload-cta-icon"><span class="ic" data-ic="upload"></span></div>
+              <div class="upload-cta-text">
+                <div class="t">رفع ورقة جديدة</div>
+                <div class="d">تصوير بالكاميرا أو اختيار ملف</div>
+              </div>
+              <div style="color:var(--primary);font-size:22px;font-weight:800;flex:none">←</div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATIENT PROFILE -->
+      <section class="screen" id="screen-profile">
+        <div class="row mb-16"><button class="btn btn-ghost btn-sm" onclick="go('patients')"><span class="ic" data-ic="back"></span> رجوع</button></div>
+        <div class="card mb-16">
+          <div class="row" style="gap:18px">
+            <div class="avatar" style="width:64px;height:64px;border-radius:20px;font-size:20px">نع</div>
+            <div style="flex:1">
+              <div class="row" style="gap:10px">
+                <span style="font-size:20px;font-weight:800">نورة عبد الرحمن</span>
+                <span class="badge prog">متابعة نشطة</span>
+                <span class="badge dang">حساسية بنسلين</span>
+              </div>
+              <div class="row" style="gap:18px;margin-top:6px;font-size:12.5px;color:var(--muted)">
+                <span>ملف #1042</span><span>29 سنة</span><span>0101 234 5678</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1.4fr;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="card"><div class="card-head"><div class="ttl">المعلومات الأساسية</div></div>
+              <div class="info-grid" style="grid-template-columns:1fr 1fr">
+                <div class="info-box"><div class="k">الاسم الكامل</div><div class="v" style="font-size:13px">نورة عبد الرحمن</div></div>
+                <div class="info-box"><div class="k">رقم الملف</div><div class="v" style="font-size:13px">#1042</div></div>
+                <div class="info-box"><div class="k">تاريخ الميلاد</div><div class="v" style="font-size:13px">04/07/1996</div></div>
+                <div class="info-box"><div class="k">فصيلة الدم</div><div class="v" style="font-size:13px">O+</div></div>
+              </div>
+            </div>
+            <div class="card"><div class="card-head"><div class="ttl">التاريخ الطبي</div></div>
+              <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-2)">
+                <div><b style="color:var(--text)">التاريخ التوليدي:</b> G2 P1 A0</div>
+                <div><b style="color:var(--text)">الأمراض المزمنة:</b> تكيس مبايض، فقر دم</div>
+                <div><b style="color:var(--text)">الحساسية:</b> <span style="color:var(--danger)">بنسلين</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div><div class="ttl">الخط الزمني للزيارات</div><div class="sub">7 زيارات</div></div></div>
+            <div class="timeline">
+              <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-head"><span class="tl-date">12 فبراير 2026</span><span class="tl-title">متابعة حمل — الأسبوع 20</span><span class="badge ok">مكتملة</span></div><div class="tl-text">سونار تشريحي طبيعي. ضغط الدم 108/68.</div></div></div>
+              <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-head"><span class="tl-date">15 يناير 2026</span><span class="tl-title">متابعة حمل — الأسبوع 16</span><span class="badge ok">مكتملة</span></div><div class="tl-text">تحاليل الربع الثاني سليمة.</div></div></div>
+              <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-body"><div class="tl-head"><span class="tl-date">18 ديسمبر 2025</span><span class="tl-title">زيارة طارئة</span><span class="badge warn">نزيف</span></div><div class="tl-text">سونار عاجل، الجنين بحالة جيدة.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FILES -->
+      <section class="screen" id="screen-files">
+        <div class="sec-head">
+          <div><div class="sec-title">الملفات والمستندات</div><div class="sec-desc">كل الأوراق الطبية</div></div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" onclick="openUploadFor('current')"><span class="ic" data-ic="upload"></span> رفع ملف</button>
+        </div>
+        <div class="docs-grid" id="filesGrid"></div>
+      </section>
+
+      <!-- FOLLOW-UPS -->
+      <section class="screen" id="screen-followups">
+        <div class="sec-head"><div><div class="sec-title">المتابعات</div><div class="sec-desc">اليوم · القادمة · المتأخرة</div></div></div>
+        <div class="grid g3" style="align-items:start">
+          <div class="card"><div class="card-head"><div class="ttl">اليوم</div><div class="spacer"></div><span class="badge ok">9</span></div>
+            <div class="q-list">
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px"><div style="font-size:13px;font-weight:700">نورة عبد الرحمن <span class="badge ok">مكتملة</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">10:30 · متابعة حمل</div></div>
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px"><div style="font-size:13px;font-weight:700">أمينة خالد <span class="badge wait">قادمة</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">13:15 · متابعة بعد عملية</div></div>
+            </div>
+          </div>
+          <div class="card"><div class="card-head"><div class="ttl">القادمة</div><div class="spacer"></div><span class="badge wait">14</span></div>
+            <div class="q-list">
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px"><div style="font-size:13px;font-weight:700">هبة مصطفى</div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">14 مارس · 09:30 · متابعة حمل</div></div>
+              <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:11px 13px"><div style="font-size:13px;font-weight:700">دعاء سمير</div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">15 مارس · 11:00</div></div>
+            </div>
+          </div>
+          <div class="card"><div class="card-head"><div class="ttl">متأخرة</div><div class="spacer"></div><span class="badge dang">2</span></div>
+            <div class="q-list">
+              <div style="background:var(--danger-soft);border:1px solid rgba(209,67,56,.22);border-radius:var(--r-sm);padding:11px 13px"><div style="font-size:13px;font-weight:700">هدى الشريف <span class="badge dang">3 أيام</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">09 مارس</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPOINTMENTS -->
+      <section class="screen" id="screen-appointments">
+        <div class="sec-head"><div><div class="sec-title">المواعيد</div><div class="sec-desc">التقويم</div></div></div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px">
+          <div class="row" style="gap:4px;background:var(--surface);padding:4px;border-radius:12px;border:1px solid var(--border)">
+            <button class="chip active" data-cal="day">يومي</button>
+            <button class="chip" data-cal="week">أسبوعي</button>
+            <button class="chip" data-cal="month">شهري</button>
+          </div>
+          <div style="flex:1"></div>
+          <button class="btn btn-primary" onclick="openModal('modalNewAppt')"><span class="ic" data-ic="plus"></span> حجز جديد</button>
+        </div>
+        <div id="calDay">
+          <div class="card"><div class="card-head"><div><div class="ttl">اليوم — قائمة الحجوزات</div></div></div>
+          <div class="q-list" id="dayList"></div></div>
+        </div>
+        <div id="calWeek" style="display:none">
+          <div class="card"><div class="card-head"><div class="ttl">الأسبوع</div></div>
+            <div class="table-wrap"><table><thead><tr><th>الوقت</th><th>السبت</th><th>الأحد</th><th>الاثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th><th>الجمعة</th></tr></thead>
+            <tbody>
+              <tr><td>09:00</td><td></td><td>هبة م.</td><td></td><td>دعاء س.</td><td>منى ر.</td><td style="background:var(--primary-soft);font-weight:700">هدى ش. ⚠</td><td></td></tr>
+              <tr><td>10:00</td><td>سلمى ن.</td><td></td><td>نورهان س.</td><td>ياسمين ع.</td><td>عبير ف.</td><td style="background:var(--primary-soft);font-weight:700">نورة ع. ▶</td><td></td></tr>
+              <tr><td>11:00</td><td></td><td>سارة م.</td><td>مريم إ.</td><td></td><td>ليلى ح.</td><td style="background:var(--primary-soft);font-weight:700">مريم إ.</td><td></td></tr>
+            </tbody></table></div>
+          </div>
+        </div>
+        <div id="calMonth" style="display:none">
+          <div class="card"><div class="card-head"><div class="ttl">مارس 2026</div></div><div id="monthGrid"></div></div>
+        </div>
+      </section>
+
+      <!-- PATIENTS -->
+      <section class="screen" id="screen-patients">
+        <div class="sec-head"><div><div class="sec-title">المرضى</div><div class="sec-desc">1,248 ملف</div></div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" onclick="openModal('modalNewPatient')"><span class="ic" data-ic="plus"></span> تسجيل مريضة</button>
+        </div>
+        <div class="card pad-0"><div class="table-wrap">
+          <table><thead><tr><th>المريضة</th><th>الهاتف</th><th>آخر زيارة</th><th>المتابعة القادمة</th><th>الحالة</th><th>زيارات</th><th></th></tr></thead>
+          <tbody id="patientsTable"></tbody></table>
+        </div></div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="screen" id="screen-reports">
+        <div class="sec-head"><div><div class="sec-title">التقارير</div><div class="sec-desc">مارس 2026</div></div></div>
+        <div class="grid g4 mb-16">
+          <div class="stat"><div class="stat-top"><div class="stat-ic"><span class="ic" data-ic="user"></span></div><div class="stat-lbl">الزيارات</div></div><div class="stat-val">612</div><div class="stat-foot"><span class="trend-up">▲ 8.4%</span></div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic blue"><span class="ic" data-ic="chart"></span></div><div class="stat-lbl">الإيرادات</div></div><div class="stat-val">142,300 <small>ج.م</small></div><div class="stat-foot"><span class="trend-up">▲ 11.2%</span></div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic gold"><span class="ic" data-ic="calendar"></span></div><div class="stat-lbl">الحجوزات</div></div><div class="stat-val">684</div><div class="stat-foot">89.5%</div></div>
+          <div class="stat"><div class="stat-top"><div class="stat-ic red"><span class="ic" data-ic="x"></span></div><div class="stat-lbl">ملغاة</div></div><div class="stat-val">48</div><div class="stat-foot"><span class="trend-up">▼ 3.1%</span></div></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="screen" id="screen-settings">
+        <div class="sec-head"><div><div class="sec-title">الإعدادات</div><div class="sec-desc">العيادة والمستخدمون والصلاحيات</div></div></div>
+        <div class="grid" style="grid-template-columns:220px 1fr;gap:22px;align-items:start">
+          <div class="card" style="padding:8px">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div class="set-item active"><span class="ic" data-ic="grid"></span> معلومات العيادة</div>
+              <div class="set-item"><span class="ic" data-ic="user"></span> المستخدمون</div>
+              <div class="set-item"><span class="ic" data-ic="check"></span> الصلاحيات</div>
+              <div class="set-item"><span class="ic" data-ic="db"></span> النسخ الاحتياطي</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="card"><div class="card-head"><div class="ttl">معلومات العيادة</div></div>
+              <div class="form-grid">
+                <div class="field"><label>اسم العيادة</label><input class="input" value="عيادة مدار للنساء والتوليد"></div>
+                <div class="field"><label>الهاتف</label><input class="input" value="+20 2 2345 6789"></div>
+                <div class="field"><label>ساعات العمل — من</label><input class="input" type="time" value="09:00"></div>
+                <div class="field"><label>ساعات العمل — إلى</label><input class="input" type="time" value="21:00"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="ttl">الأدوار والصلاحيات</div></div>
+              <div class="table-wrap"><table>
+                <thead><tr><th>الشاشة</th><th style="text-align:center">مدير</th><th style="text-align:center">طبيب</th><th style="text-align:center">استقبال</th><th style="text-align:center">تمريض</th></tr></thead>
+                <tbody>
+                  <tr><td>لوحة التحكم</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+                  <tr><td>الاستقبال</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td></tr>
+                  <tr><td>شاشة الطبيب</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td></tr>
+                  <tr><td>المرضى</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+                  <tr><td>المواعيد</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+                  <tr><td>المتابعات</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+                  <tr><td>الملفات</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td></tr>
+                  <tr><td>التقارير</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td></tr>
+                  <tr><td>الإعدادات</td><td style="text-align:center">✅</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()"></div>
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* ============================================================
+   ICONS
+   ============================================================ */
+const ICONS = {
+  grid:'<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/>',
+  queue:'<path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/>',
+  steth:'<path d="M6 3v6a5 5 0 0 0 10 0V3"/><path d="M11 14v2a5 5 0 0 0 10 0v-1"/><circle cx="21" cy="12" r="2"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4.2 3.4-6.5 7.5-6.5s7.5 2.3 7.5 6.5"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  bell:'<path d="M6 9.5a6 6 0 1 1 12 0c0 5.5 2.5 6.8 2.5 6.8h-17S6 15 6 9.5Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  folder:'<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.3l2 2.5h7.7A2.5 2.5 0 0 1 21 10v7.5A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z"/>',
+  chart:'<path d="M4 20V11M9.3 20V5M14.7 20v-6M20 20V9"/><path d="M2.5 20h19"/>',
+  settings:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v2.3M12 19.1v2.3M4.4 4.4l1.6 1.6M18 18l1.6 1.6M2.6 12h2.3M19.1 12h2.3M4.4 19.6L6 18M18 6l1.6-1.6"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+  download:'<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 18v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/>',
+  trash:'<path d="M4 7h16M9.5 7V5.2a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2V7M6.5 7l.9 12.1a1.2 1.2 0 0 0 1.2 1.1h6.8a1.2 1.2 0 0 0 1.2-1.1L17.5 7"/>',
+  check:'<path d="M4.5 12.5l5 5L19.5 7"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  clock:'<circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.3l3.4 2"/>',
+  phone:'<path d="M5 3h3.4l1.7 4.2-2 1.4a12.2 12.2 0 0 0 5.3 5.3l1.4-2L19 13.6V17a2 2 0 0 1-2.2 2A15.2 15.2 0 0 1 3 5.2 2 2 0 0 1 5 3Z"/>',
+  print:'<path d="M7 8V3.5h10V8"/><rect x="4" y="8" width="16" height="8.5" rx="2.2"/><path d="M7 16.5h10V21H7z"/>',
+  wifi:'<path d="M2.6 9.2a15 15 0 0 1 18.8 0M6.1 12.6a10 10 0 0 1 11.8 0M9.5 16a5 5 0 0 1 5 0"/><circle cx="12" cy="19.6" r="1.1"/>',
+  db:'<ellipse cx="12" cy="6" rx="7.8" ry="3"/><path d="M4.2 6v12c0 1.7 3.5 3 7.8 3s7.8-1.3 7.8-3V6"/><path d="M4.2 12c0 1.7 3.5 3 7.8 3s7.8-1.3 7.8-3"/>',
+  file:'<path d="M14 3H7.5A2.5 2.5 0 0 0 5 5.5v13A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V8z"/><path d="M14 3v5h5"/>',
+  image:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.6" cy="9.6" r="1.7"/><path d="M21 15.8l-4.6-4.6-5.6 5.6-2.8-2.8L3 18.9"/>',
+  alert:'<path d="M12 4.2l9.4 16.3H2.6z"/><path d="M12 10v4M12 17.4v.01"/>',
+  back:'<path d="M9.5 6l6 6-6 6"/>',
+  logout:'<path d="M15 12H4.2M8 8.2L4.2 12 8 15.8"/><path d="M12.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5.5"/>',
+  'chevron-down':'<path d="M6 9.5l6 6 6-6"/>',
+  play:'<path d="M7 4l12 8-12 8z" fill="currentColor"/>',
+  edit:'<path d="M15.5 4.5l4 4L8 20H4v-4z"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>'
+};
+function svgIcon(name){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%">${ICONS[name]||''}</svg>`; }
+function renderIcons(scope=document){ scope.querySelectorAll('[data-ic]').forEach(el=>{ el.innerHTML = svgIcon(el.dataset.ic); }); }
+
+['loginLogoSlot','sbLogoSlot'].forEach(id=>{
+  const t = document.getElementById('logoTpl').content.cloneNode(true);
+  document.getElementById(id).appendChild(t);
+});
+
+/* ============================================================
+   THUMBNAIL GENERATORS
+   ============================================================ */
+function rxThumb(date, patient){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="300" height="400" fill="#ffffff"/>
+    <rect x="0" y="0" width="300" height="60" fill="#159A6B"/>
+    <text x="150" y="28" text-anchor="middle" fill="#ffffff" font-family="Cairo,sans-serif" font-size="14" font-weight="700">MADAR CLINIC</text>
+    <text x="150" y="48" text-anchor="middle" fill="#ffffff" font-family="Cairo,sans-serif" font-size="10">د. أحمد عبدالناصر — نساء وتوليد</text>
+    <line x1="20" y1="76" x2="280" y2="76" stroke="#159A6B" stroke-width="1.5"/>
+    <text x="20" y="98" fill="#333" font-family="Cairo,sans-serif" font-size="11" font-weight="700">المريضة: ${patient}</text>
+    <text x="280" y="98" text-anchor="end" fill="#777" font-family="Cairo,sans-serif" font-size="10">${date}</text>
+    <text x="20" y="130" fill="#555" font-family="Cairo,sans-serif" font-size="10" font-weight="700">℞</text>
+    <line x1="20" y1="140" x2="120" y2="140" stroke="#ccc" stroke-width="1"/>
+    <line x1="20" y1="152" x2="270" y2="152" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="168" x2="250" y2="168" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="184" x2="260" y2="184" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="200" x2="220" y2="200" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="216" x2="270" y2="216" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="232" x2="240" y2="232" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="248" x2="260" y2="248" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="264" x2="200" y2="264" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="280" x2="270" y2="280" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="20" y1="296" x2="230" y2="296" stroke="#e0e0e0" stroke-width="1"/>
+    <text x="20" y="330" fill="#888" font-family="Cairo,sans-serif" font-size="9">التوقيع:</text>
+    <path d="M150 340 Q170 320 190 340 T230 335" stroke="#159A6B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <line x1="150" y1="348" x2="250" y2="348" stroke="#ccc" stroke-width="1"/>
+    <text x="150" y="375" text-anchor="middle" fill="#aaa" font-family="Cairo,sans-serif" font-size="8">MADAR Clinic · 2345 6789 2 20+</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function usThumb(date, ga){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="300" height="400" fill="#0a0a0a"/>
+    <defs>
+      <radialGradient id="cone" cx="50%" cy="55%" r="60%">
+        <stop offset="0%" stop-color="#e8e8e8" stop-opacity="0.9"/>
+        <stop offset="40%" stop-color="#888" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="baby" cx="50%" cy="55%" r="30%">
+        <stop offset="0%" stop-color="#fff" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#888" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <path d="M30 400 L150 100 L270 400 Z" fill="url(#cone)"/>
+    <ellipse cx="150" cy="230" rx="60" ry="40" fill="url(#baby)"/>
+    <ellipse cx="135" cy="220" rx="18" ry="14" fill="#d0d0d0" opacity="0.7"/>
+    <ellipse cx="165" cy="235" rx="22" ry="16" fill="#c8c8c8" opacity="0.6"/>
+    <text x="15" y="25" fill="#69D9AD" font-family="monospace" font-size="11" font-weight="700">MADAR U/S</text>
+    <text x="15" y="42" fill="#69D9AD" font-family="monospace" font-size="9">${date}</text>
+    <text x="285" y="25" text-anchor="end" fill="#69D9AD" font-family="monospace" font-size="11" font-weight="700">GA ${ga}</text>
+    <text x="15" y="375" fill="#69D9AD" font-family="monospace" font-size="9">FHR: 148 bpm</text>
+    <text x="285" y="375" text-anchor="end" fill="#69D9AD" font-family="monospace" font-size="9">BPD 5.9cm</text>
+    <line x1="15" y1="388" x2="285" y2="388" stroke="#69D9AD" stroke-width="0.5" opacity="0.4"/>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function labThumb(date, patient){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="300" height="400" fill="#ffffff"/>
+    <rect x="0" y="0" width="300" height="50" fill="#2D7FB0"/>
+    <text x="150" y="22" text-anchor="middle" fill="#fff" font-family="Cairo,sans-serif" font-size="12" font-weight="700">LABORATORY REPORT</text>
+    <text x="150" y="40" text-anchor="middle" fill="#d0e8f5" font-family="Cairo,sans-serif" font-size="9">CBC · Complete Blood Count</text>
+    <text x="15" y="70" fill="#333" font-family="Cairo,sans-serif" font-size="10" font-weight="700">${patient}</text>
+    <text x="285" y="70" text-anchor="end" fill="#777" font-family="Cairo,sans-serif" font-size="9">${date}</text>
+    <rect x="15" y="85" width="270" height="22" fill="#E0EAE5"/>
+    <text x="20" y="100" fill="#333" font-family="Cairo,sans-serif" font-size="9" font-weight="700">Test</text>
+    <text x="160" y="100" text-anchor="middle" fill="#333" font-family="Cairo,sans-serif" font-size="9" font-weight="700">Result</text>
+    <text x="280" y="100" text-anchor="end" fill="#333" font-family="Cairo,sans-serif" font-size="9" font-weight="700">Range</text>
+    <g font-family="Cairo,sans-serif" font-size="9" fill="#444">
+      <line x1="15" y1="118" x2="285" y2="118" stroke="#eee"/>
+      <text x="20" y="132">Hemoglobin</text><text x="160" y="132" text-anchor="middle" fill="#B0392E" font-weight="700">10.4 ↓</text><text x="280" y="132" text-anchor="end">12-15</text>
+      <line x1="15" y1="142" x2="285" y2="142" stroke="#eee"/>
+      <text x="20" y="156">WBC</text><text x="160" y="156" text-anchor="middle" fill="#159A6B" font-weight="700">7.2</text><text x="280" y="156" text-anchor="end">4-11</text>
+      <line x1="15" y1="166" x2="285" y2="166" stroke="#eee"/>
+      <text x="20" y="180">Platelets</text><text x="160" y="180" text-anchor="middle" fill="#159A6B" font-weight="700">245</text><text x="280" y="180" text-anchor="end">150-400</text>
+      <line x1="15" y1="190" x2="285" y2="190" stroke="#eee"/>
+      <text x="20" y="204">Glucose (F)</text><text x="160" y="204" text-anchor="middle" fill="#159A6B" font-weight="700">88</text><text x="280" y="204" text-anchor="end">70-95</text>
+      <line x1="15" y1="214" x2="285" y2="214" stroke="#eee"/>
+      <text x="20" y="228">TSH</text><text x="160" y="228" text-anchor="middle" fill="#159A6B" font-weight="700">2.1</text><text x="280" y="228" text-anchor="end">0.4-4.0</text>
+      <line x1="15" y1="238" x2="285" y2="238" stroke="#eee"/>
+      <text x="20" y="252">Creatinine</text><text x="160" y="252" text-anchor="middle" fill="#159A6B" font-weight="700">0.7</text><text x="280" y="252" text-anchor="end">0.6-1.1</text>
+    </g>
+    <text x="150" y="320" text-anchor="middle" fill="#888" font-family="Cairo,sans-serif" font-size="8">-- End of report --</text>
+    <text x="150" y="380" text-anchor="middle" fill="#aaa" font-family="Cairo,sans-serif" font-size="8">MADAR Clinic Laboratory</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+/* ============================================================
+   SIDEBAR RESPONSIVE
+   ============================================================ */
+function openSidebar(){
+  if(window.innerWidth > 768) return;
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbBackdrop').classList.add('show');
+  document.body.classList.add('drawer-open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbBackdrop').classList.remove('show');
+  document.body.classList.remove('drawer-open');
+}
+// Close on resize to desktop
+window.addEventListener('resize', ()=>{
+  if(window.innerWidth > 768) closeSidebar();
+});
+
+/* ============================================================
+   ROLES
+   ============================================================ */
+const ROLES = {
+  admin:{name:'مدير النظام', user:'نرمين صابر', avatar:'نص', greeting:'مرحباً نرمين', nav:['dashboard','reception','doctor','patients','appointments','followups','files','reports','settings']},
+  doctor:{name:'طبيب', user:'د. أحمد عبدالناصر', avatar:'أع', greeting:'مرحباً د. أحمد', nav:['dashboard','doctor','patients','appointments','followups','files','reports']},
+  reception:{name:'استقبال', user:'سارة محمد', avatar:'سم', greeting:'مرحباً سارة', nav:['dashboard','reception','patients','appointments','followups','files']},
+  nurse:{name:'تمريض', user:'أحمد حسن', avatar:'أح', greeting:'مرحباً أحمد', nav:['dashboard','patients','appointments','followups','files']}
+};
+const NAV_ITEMS = [
+  {id:'dashboard',    title:'لوحة التحكم',  sub:'نظرة عامة',        icon:'grid',     group:'الرئيسية'},
+  {id:'reception',    title:'الاستقبال',    sub:'قائمة الانتظار',    icon:'queue',    group:'الرئيسية', count:'q'},
+  {id:'doctor',       title:'شاشة الطبيب',  sub:'الطابور والأوراق',   icon:'steth',    group:'الرئيسية'},
+  {id:'patients',     title:'المرضى',       sub:'إدارة الملفات',     icon:'user',     group:'السجلات'},
+  {id:'appointments', title:'المواعيد',     sub:'التقويم',           icon:'calendar', group:'السجلات'},
+  {id:'followups',    title:'المتابعات',    sub:'اليوم والقادمة',     icon:'bell',     group:'السجلات', count:'9'},
+  {id:'files',        title:'الملفات',      sub:'الروشتات والسونار',  icon:'folder',   group:'السجلات'},
+  {id:'reports',      title:'التقارير',     sub:'الإحصائيات',        icon:'chart',    group:'الإدارة'},
+  {id:'settings',     title:'الإعدادات',    sub:'العيادة والمستخدمون', icon:'settings', group:'الإدارة'}
+];
+let currentRole = 'doctor';
+
+/* ============================================================
+   QUEUE + DOCS
+   ============================================================ */
+let queue = [
+  {id:1, name:'نورة عبد الرحمن', time:'10:30', bookedAt:'10:12', type:'متابعة حمل', status:'current', phone:'0101 234 5678', age:29, fileNo:'#1042', note:'الأسبوع 24'},
+  {id:2, name:'سارة محمود',      time:'10:45', bookedAt:'09:55', type:'كشف جديد', status:'waiting', phone:'0112 345 6789', age:26, fileNo:'#1128'},
+  {id:3, name:'هدى الشريف',      time:'11:00', bookedAt:'10:08', type:'متابعة',   status:'waiting', phone:'0122 456 7890', age:34, fileNo:'#0987'},
+  {id:4, name:'مريم إبراهيم',    time:'11:15', bookedAt:'10:20', type:'سونار',    status:'waiting', phone:'0100 987 6543', age:31, fileNo:'#1204'},
+  {id:5, name:'ليلى حسن',        time:'11:30', bookedAt:'10:31', type:'كشف جديد', status:'waiting', phone:'0128 765 4321', age:23, fileNo:'#1176'},
+  {id:6, name:'أمينة خالد',      time:'11:45', bookedAt:'10:44', type:'متابعة',   status:'waiting', phone:'0114 222 3333', age:41, fileNo:'#0912'},
+  {id:7, name:'ريم فؤاد',        time:'12:00', bookedAt:'11:02', type:'سونار',    status:'waiting', phone:'0106 555 7777', age:28, fileNo:'#1088'}
+];
+const DOCUMENTS = {
+  1: [
+    {id:'d1', type:'سونار', name:'سونار الأسبوع 24.jpg', date:'12 مارس', visit:'متابعة حمل', thumb: usThumb('12 MAR 2026','24w3d')},
+    {id:'d2', type:'روشتة', name:'روشتة 12 مارس.pdf', date:'12 مارس', visit:'متابعة حمل', thumb: rxThumb('12/03/2026','نورة عبد الرحمن')},
+    {id:'d3', type:'تحليل', name:'تحليل دم شامل.pdf', date:'12 مارس', visit:'متابعة', thumb: labThumb('12/03/2026','نورة عبد الرحمن')},
+    {id:'d4', type:'سونار', name:'سونار الأسبوع 20.jpg', date:'12 فبراير', visit:'متابعة حمل', thumb: usThumb('12 FEB 2026','20w1d')},
+    {id:'d5', type:'تحليل', name:'TSH و سكر.pdf', date:'15 يناير', visit:'متابعة', thumb: labThumb('15/01/2026','نورة عبد الرحمن')},
+    {id:'d6', type:'روشتة', name:'روشتة يناير.pdf', date:'15 يناير', visit:'متابعة', thumb: rxThumb('15/01/2026','نورة عبد الرحمن')},
+  ],
+  2: [
+    {id:'d7', type:'تحليل', name:'تحليل حمل.pdf', date:'10 مارس', visit:'كشف', thumb: labThumb('10/03/2026','سارة محمود')},
+    {id:'d8', type:'روشتة', name:'روشتة كشف.pdf', date:'10 مارس', visit:'كشف جديد', thumb: rxThumb('10/03/2026','سارة محمود')},
+  ],
+  3: [
+    {id:'d9', type:'سونار', name:'سونار تجويف.jpg', date:'05 مارس', visit:'متابعة', thumb: usThumb('05 MAR 2026','—')},
+  ],
+  4: [
+    {id:'d10', type:'سونار', name:'سونار أول.jpg', date:'08 مارس', visit:'سونار', thumb: usThumb('08 MAR 2026','12w2d')},
+  ],
+  5: [], 6: [], 7: []
+};
+let docFilter = 'all';
+
+/* ============================================================
+   LIVE CLOCK
+   ============================================================ */
+function tickClock(){
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  const t = document.getElementById('liveTime');
+  const d = document.getElementById('liveDate');
+  if(t) t.textContent = `${h}:${m}:${s}`;
+  if(d){
+    const days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+    const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    d.textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+  }
+}
+setInterval(tickClock, 1000); tickClock();
+
+/* ============================================================
+   NAV
+   ============================================================ */
+function buildSidebar(role){
+  const allowed = ROLES[role].nav;
+  const nav = document.getElementById('sbNav');
+  let html = '', lastGroup = '';
+  NAV_ITEMS.forEach(item=>{
+    if(!allowed.includes(item.id)) return;
+    if(item.group !== lastGroup){ html += `<div class="sb-label">${item.group}</div>`; lastGroup = item.group; }
+    let count = '';
+    if(item.count === 'q'){ count = `<span class="nav-count" id="navQueueCount">${waitingCount()}</span>`; }
+    else if(item.count){ count = `<span class="nav-count">${item.count}</span>`; }
+    html += `<div class="nav-item" data-nav="${item.id}" data-title="${item.title}" data-sub="${item.sub}"><span class="ic" data-ic="${item.icon}"></span><span>${item.title}</span>${count}</div>`;
+  });
+  nav.innerHTML = html;
+  renderIcons(nav);
+  nav.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{
+    go(n.dataset.nav);
+    closeSidebar();
+  }));
+}
+function waitingCount(){ return queue.filter(q=>q.status==='waiting').length; }
+
+function go(id){
+  const allowed = ROLES[currentRole].nav;
+  if(!allowed.includes(id) && !['profile'].includes(id)){ toast('ليست لديك صلاحية','warn'); return; }
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t = document.getElementById('screen-'+id);
+  if(t) t.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.nav === id));
+  const item = NAV_ITEMS.find(i=>i.id===id);
+  if(item){ document.getElementById('pageTitle').textContent = item.title; document.getElementById('pageSub').textContent = item.sub; }
+  else if(id==='profile'){ document.getElementById('pageTitle').textContent='ملف المريضة'; document.getElementById('pageSub').textContent=''; }
+  document.getElementById('content').scrollTop = 0;
+}
+
+/* ============================================================
+   LOGIN / LOGOUT
+   ============================================================ */
+function doLogin(role){
+  if(!ROLES[role]) role = 'doctor';
+  currentRole = role;
+  const r = ROLES[role];
+  document.getElementById('loginScreen').classList.add('off');
+  document.getElementById('sbAvatar').textContent = r.avatar;
+  document.getElementById('sbName').textContent = r.user;
+  document.getElementById('sbRole').textContent = r.name;
+  document.getElementById('roleSwitchLabel').textContent = r.name;
+  document.getElementById('dashGreeting').textContent = r.greeting;
+  document.querySelectorAll('#rolePop .pop-row').forEach(row=>row.classList.toggle('active', row.dataset.role === role));
+  buildSidebar(role);
+  renderAll();
+  go('dashboard');
+  document.getElementById('rolePop')?.classList.remove('open');
+  setTimeout(()=>toast(`مرحباً ${r.user} — «${r.name}»`,'ok'), 250);
+}
+function logout(){
+  confirmAction('تسجيل الخروج؟','سيتم إنهاء الجلسة.','خروج',()=>{
+    document.getElementById('loginScreen').classList.remove('off');
+  });
+}
+
+function togglePopover(e){ e.stopPropagation(); document.getElementById('netPop').classList.toggle('open'); document.getElementById('rolePop').classList.remove('open'); }
+function toggleRole(e){ e.stopPropagation(); document.getElementById('rolePop').classList.toggle('open'); document.getElementById('netPop').classList.remove('open'); }
+document.addEventListener('click', ()=>{ document.getElementById('netPop')?.classList.remove('open'); document.getElementById('rolePop')?.classList.remove('open'); });
+
+/* ============================================================
+   QUEUE ACTIONS
+   ============================================================ */
+function makeCurrent(id){
+  queue.forEach(q => { if(q.status==='current') q.status = 'waiting'; });
+  const p = queue.find(q => q.id === id);
+  if (p) p.status = 'current';
+  renderAll();
+  toast(`تم إدخال ${p?.name || ''}`, 'ok');
+}
+function finishCurrent(){
+  const cur = queue.find(q => q.status === 'current');
+  if(!cur){ toast('لا توجد حالة حالية', 'warn'); return; }
+  cur.status = 'done';
+  const next = queue.find(q => q.status === 'waiting');
+  if(next){ next.status = 'current'; toast(`تم إنهاء ${cur.name} — ${next.name} الحالية`,'ok'); }
+  else toast(`تم إنهاء ${cur.name}`,'ok');
+  renderAll();
+}
+function postponePatient(id){
+  const p = queue.find(q => q.id === id);
+  if(!p) return;
+  p.status = 'waiting';
+  queue = queue.filter(q => q.id !== id).concat(p);
+  renderAll();
+  toast(`تم تأجيل ${p.name}`,'warn');
+}
+function cancelPatient(id){
+  const p = queue.find(q => q.id === id);
+  confirmAction(`إلغاء موعد ${p.name}؟`,'سيتم إلغاء الحجز.','إلغاء',()=>{
+    p.status = 'cancelled';
+    renderAll();
+    toast(`تم إلغاء ${p.name}`,'err');
+  });
+}
+function editAppt(id){
+  const p = queue.find(q=>q.id===id);
+  if(!p) return;
+  openModalCustom('تعديل الحجز', `${p.name} · ${p.time}`, `
+    <div class="form-grid">
+      <div class="field"><label>الوقت</label><input class="input" type="time" value="${p.time}" id="editTime"></div>
+      <div class="field"><label>النوع</label>
+        <select class="select" id="editType">
+          ${['كشف جديد','متابعة','متابعة حمل','سونار','مراجعة تحاليل'].map(t=>`<option ${t===p.type?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>`, [
+      {label:'حذف', cls:'btn-danger', fn:()=>{ closeModal(); cancelPatient(id); }},
+      {label:'حفظ', cls:'btn-primary', fn:()=>{
+        p.time = document.getElementById('editTime').value || p.time;
+        p.type = document.getElementById('editType').value;
+        closeModal(); renderAll(); toast('تم التحديث');
+      }}
+    ]);
+}
+
+function getOrderNum(p){
+  const sorted = [...queue].sort((a,b)=> a.time.localeCompare(b.time));
+  return sorted.findIndex(q=>q.id===p.id) + 1;
+}
+function statusBadge(s){
+  return {current:'<span class="badge prog">داخل الكشف</span>',
+          waiting:'<span class="badge wait">في الانتظار</span>',
+          done:'<span class="badge ok">مكتملة</span>',
+          cancelled:'<span class="badge dang">ملغاة</span>'}[s] || '';
+}
+
+/* ============================================================
+   RECEPTION
+   ============================================================ */
+function renderReception(){
+  const current = queue.find(q => q.status === 'current');
+  const waiting = queue.filter(q => q.status === 'waiting');
+  const done = queue.filter(q => q.status === 'done');
+
+  const cw = document.getElementById('receptionCurrent');
+  if (current){
+    const docsCount = (DOCUMENTS[current.id]||[]).length;
+    cw.innerHTML = `
+      <div class="now-card">
+        <span class="now-label">● المريضة الحالية داخل الكشف</span>
+        <div class="now-name">${current.name}</div>
+        <div class="now-meta">
+          <span class="mi">🕒 محجوز ${current.time} · دخلت ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span>
+          <span class="mi">${current.type}${current.note ? ' — '+current.note : ''}</span>
+          <span class="mi">${current.age} سنة · ${current.fileNo}</span>
+          <span class="mi">📁 ${docsCount} ورقة</span>
+        </div>
+        <div class="now-actions">
+          <button class="btn btn-primary" onclick="finishCurrent()">✓ إنهاء الكشف</button>
+          <button class="btn btn-mint" onclick="openUploadFor(${current.id})">⬆ رفع ورقة</button>
+          <button class="btn btn-ghost" onclick="postponePatient(${current.id})">⏱ تأجيل</button>
+          <button class="btn btn-danger" onclick="cancelPatient(${current.id})">✕ No Show</button>
+        </div>
+      </div>`;
+  } else {
+    cw.innerHTML = `
+      <div class="now-card" style="text-align:center">
+        <span class="now-label">لا توجد حالة حالية</span>
+        <div class="now-name" style="font-size:15px;color:#BAC8C1;margin-top:10px">اضغط «دخول» على أي مريضة لبدء الكشف</div>
+      </div>`;
+  }
+
+  document.getElementById('statWaiting').textContent = waiting.length;
+  document.getElementById('statCurrent').textContent = current ? 1 : 0;
+  document.getElementById('statDone').textContent = done.length;
+  document.getElementById('queueSub').textContent = `${queue.length} حجز · ${waiting.length} انتظار`;
+
+  const sorted = [...queue].sort((a,b)=>{
+    const order = {current:0, waiting:1, done:2, cancelled:3};
+    if (order[a.status] !== order[b.status]) return order[a.status] - order[b.status];
+    return a.time.localeCompare(b.time);
+  });
+  document.getElementById('receptionQueue').innerHTML = sorted.map(p => {
+    const num = getOrderNum(p);
+    const isCurrent = p.status === 'current';
+    const isNext = p.status === 'waiting' && waiting[0]?.id === p.id;
+    const docsCount = (DOCUMENTS[p.id]||[]).length;
+    return `
+      <div class="q-card ${isCurrent?'is-current':''}">
+        <div class="q-num ${isCurrent?'current':isNext?'next':''}">
+          ${num}
+          ${isCurrent?'<small>الحالي</small>':isNext?'<small>التالي</small>':''}
+        </div>
+        <div class="q-time-big">${p.time}<small>حجزت ${p.bookedAt}</small></div>
+        <div class="q-info">
+          <div class="q-name">${p.name} ${statusBadge(p.status)}</div>
+          <div class="q-meta">
+            <span>${p.type}${p.note?' · '+p.note:''}</span>
+            <span>${p.age} سنة · ${p.fileNo}</span>
+          </div>
+        </div>
+        <div class="q-acts">
+          <button class="btn btn-sm btn-mint" onclick="openUploadFor(${p.id})">⬆ رفع${docsCount>0?' ('+docsCount+')':''}</button>
+          ${p.status === 'waiting' ? `<button class="btn btn-sm btn-primary" onclick="makeCurrent(${p.id})">▶ دخول</button>` : ''}
+          ${p.status === 'current' ? `<button class="btn btn-sm btn-primary" onclick="finishCurrent()">✓ إنهاء</button>` : ''}
+          ${p.status !== 'done' && p.status !== 'cancelled' ? `<button class="btn btn-sm btn-ghost" onclick="editAppt(${p.id})">✎</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+  renderIcons(document.getElementById('receptionQueue'));
+
+  const now = new Date();
+  document.getElementById('receptionSub').textContent = `الآن ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} · ${waiting.length} في الانتظار`;
+
+  const nc = document.getElementById('navQueueCount');
+  if(nc) nc.textContent = waiting.length;
+}
+
+/* ============================================================
+   DOCTOR
+   ============================================================ */
+function renderDoctor(){
+  const current = queue.find(q => q.status === 'current');
+  const waiting = queue.filter(q => q.status === 'waiting');
+  const next5 = waiting.slice(0, 5);
+
+  const cw = document.getElementById('doctorCurrent');
+  if(current){
+    cw.innerHTML = `
+      <div class="cur-patient">
+        <span class="cp-label"><span class="live"></span> المريضة الحالية</span>
+        <div class="cp-row">
+          <div class="cp-info">
+            <div class="cp-name">${current.name}</div>
+            <div class="cp-meta">
+              <span>🕒 ${current.time}</span>
+              <span>${current.age} سنة</span>
+              <span>${current.fileNo}</span>
+            </div>
+          </div>
+          <div class="cp-num-badge">${getOrderNum(current)}<small>الدور</small></div>
+        </div>
+        <div class="cp-actions">
+          <button class="btn btn-mint-strong" onclick="finishCurrent()">✓ إنهاء</button>
+          <button class="btn" onclick="openUploadFor(${current.id})">⬆ رفع</button>
+        </div>
+      </div>`;
+  } else {
+    cw.innerHTML = `
+      <div class="cur-patient" style="text-align:center;padding:24px 18px">
+        <span class="cp-label"><span class="live"></span> لا توجد حالة حالية</span>
+        <div style="font-size:13px;color:#BAC8C1;margin-top:12px;line-height:1.6">بمجرد أن يسجل الاستقبال دخول مريضة،<br>ستظهر تلقائياً هنا</div>
+      </div>`;
+  }
+  renderIcons(cw);
+
+  const list = document.getElementById('doctorNextList');
+  const badge = document.getElementById('nextCountBadge');
+  badge.textContent = `${waiting.length} في الانتظار`;
+  if(next5.length === 0){
+    list.innerHTML = `<div class="empty-mini">لا يوجد مرضى في الانتظار</div>`;
+  } else {
+    list.innerHTML = next5.map((p, i) => {
+      const isNext = i === 0;
+      return `
+        <div class="next-mini ${isNext?'is-next':''}">
+          ${isNext?'<span class="tag">التالي</span>':''}
+          <div class="num">${getOrderNum(p)}</div>
+          <div class="info">
+            <div class="nm">${p.name}</div>
+            <div class="mt">🕒 ${p.time} · ${p.type}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  renderDoctorDocs(current);
+}
+
+function renderDoctorDocs(current){
+  const wrap = document.getElementById('doctorDocs');
+  const whoName = document.getElementById('docWhoName');
+  const whoSub = document.getElementById('docWhoSub');
+  if(!wrap) return;
+
+  if(!current){
+    whoName.textContent = 'لا توجد مريضة داخل الكشف';
+    whoSub.textContent = 'ستظهر الأوراق تلقائياً عند دخول مريضة';
+    wrap.innerHTML = `
+      <div class="docs-empty">
+        <div class="ic-wrap"><span class="ic" data-ic="folder"></span></div>
+        <div class="t">لا توجد أوراق لعرضها</div>
+        <div class="d">بمجرد أن يسجل الاستقبال دخول مريضة، ستظهر أوراقها هنا مباشرة.</div>
+      </div>`;
+    renderIcons(wrap);
+    return;
+  }
+
+  whoName.textContent = current.name;
+  whoSub.textContent = `${current.fileNo} · ${current.age} سنة · ${current.type}`;
+
+  const docs = DOCUMENTS[current.id] || [];
+  const filtered = docFilter === 'all' ? docs : docs.filter(d => d.type === docFilter);
+
+  if(filtered.length === 0){
+    wrap.innerHTML = `
+      <div class="docs-empty">
+        <div class="ic-wrap"><span class="ic" data-ic="upload"></span></div>
+        <div class="t">${docs.length === 0 ? 'لا توجد أوراق بعد' : 'لا توجد أوراق من هذا النوع'}</div>
+        <div class="d">اضغط على «رفع ورقة جديدة» بالأسفل.</div>
+      </div>`;
+    renderIcons(wrap);
+    return;
+  }
+
+  wrap.innerHTML = filtered.map(d => {
+    const kind = d.type==='سونار'?'sonar':d.type==='تحليل'?'lab':d.type==='PDF'?'pdf':'';
+    return `
+      <div class="doc-tile" onclick="toast('فتح ${d.name}','info')">
+        <div class="doc-tile-img">
+          <span class="doc-tile-type ${kind}">${d.type}</span>
+          <img src="${d.thumb}" alt="${d.name}">
+        </div>
+        <div class="doc-tile-info">
+          <div class="doc-tile-name">${d.name}</div>
+          <div class="doc-tile-meta">
+            <span>📅 ${d.date}</span>
+            <span>· ${d.visit}</span>
+          </div>
+        </div>
+        <div class="doc-tile-actions">
+          <button class="icon-btn sm" onclick="event.stopPropagation();toast('معاينة…','info')"><span class="ic" data-ic="search"></span></button>
+          <button class="icon-btn sm" onclick="event.stopPropagation();toast('تحميل…','info')"><span class="ic" data-ic="download"></span></button>
+          <button class="icon-btn sm" onclick="event.stopPropagation();toast('طباعة…','info')"><span class="ic" data-ic="print"></span></button>
+          <button class="icon-btn sm" onclick="event.stopPropagation();deleteDoc(${current.id}, '${d.id}')" style="margin-inline-start:auto;color:var(--danger)"><span class="ic" data-ic="trash"></span></button>
+        </div>
+      </div>`;
+  }).join('');
+  renderIcons(wrap);
+}
+
+function deleteDoc(patientId, docId){
+  confirmAction('حذف الورقة؟','لا يمكن التراجع.','حذف',()=>{
+    if(DOCUMENTS[patientId]){
+      DOCUMENTS[patientId] = DOCUMENTS[patientId].filter(d => d.id !== docId);
+    }
+    renderAll();
+    toast('تم الحذف','err');
+  });
+}
+
+document.addEventListener('click', e=>{
+  const chip = e.target.closest('[data-docfilter]');
+  if(chip){
+    document.querySelectorAll('[data-docfilter]').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    docFilter = chip.dataset.docfilter;
+    const cur = queue.find(q => q.status === 'current');
+    renderDoctorDocs(cur);
+  }
+});
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+function renderDashboard(){
+  const waiting = queue.filter(q => q.status === 'waiting');
+  const current = queue.find(q => q.status === 'current');
+  document.getElementById('dashWaiting').textContent = waiting.length;
+  document.getElementById('dashCurrent').textContent = current ? 1 : 0;
+  const top4 = waiting.slice(0, 4);
+  document.getElementById('dashQueue').innerHTML = top4.length ? top4.map((p,i)=>`
+    <div class="q-card">
+      <div class="q-num ${i===0?'next':''}">${getOrderNum(p)}${i===0?'<small>التالي</small>':''}</div>
+      <div class="q-time-big">${p.time}<small>${p.bookedAt}</small></div>
+      <div class="q-info">
+        <div class="q-name">${p.name}</div>
+        <div class="q-meta"><span>${p.type}</span><span>${p.fileNo}</span></div>
+      </div>
+      <span class="badge wait">في الانتظار</span>
+    </div>`).join('') : `<div class="empty-slot">لا يوجد مرضى في الانتظار</div>`;
+  renderIcons(document.getElementById('dashQueue'));
+}
+
+/* ============================================================
+   FILES
+   ============================================================ */
+function renderFiles(){
+  const grid = document.getElementById('filesGrid');
+  if(!grid) return;
+  const all = [];
+  Object.values(DOCUMENTS).forEach(arr => all.push(...arr));
+  grid.innerHTML = all.map(d => {
+    const kind = d.type==='سونار'?'sonar':d.type==='تحليل'?'lab':d.type==='PDF'?'pdf':'';
+    return `
+      <div class="doc-tile" onclick="toast('فتح ${d.name}','info')">
+        <div class="doc-tile-img">
+          <span class="doc-tile-type ${kind}">${d.type}</span>
+          <img src="${d.thumb}" alt="${d.name}">
+        </div>
+        <div class="doc-tile-info">
+          <div class="doc-tile-name">${d.name}</div>
+          <div class="doc-tile-meta"><span>📅 ${d.date}</span><span>· ${d.visit}</span></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   PATIENTS
+   ============================================================ */
+const PATIENTS = [
+  {n:'نورة عبد الرحمن', id:'#1042', p:'0101 234 5678', lv:'12 فبراير 2026', fu:'26 مارس 2026', s:'prog', sl:'حمل حالي', v:7},
+  {n:'سارة محمود',      id:'#1128', p:'0112 345 6789', lv:'20 فبراير 2026', fu:'—',            s:'mute', sl:'بدون متابعة', v:2},
+  {n:'هدى الشريف',      id:'#0987', p:'0122 456 7890', lv:'05 مارس 2026',   fu:'09 مارس 2026', s:'warn', sl:'متابعة متأخرة', v:11},
+  {n:'مريم إبراهيم',    id:'#1204', p:'0100 987 6543', lv:'08 مارس 2026',   fu:'22 مارس 2026', s:'prog', sl:'حمل حالي', v:5},
+  {n:'ليلى حسن',        id:'#1176', p:'0128 765 4321', lv:'01 مارس 2026',   fu:'—',            s:'mute', sl:'بدون متابعة', v:1},
+  {n:'أمينة خالد',      id:'#0912', p:'0114 222 3333', lv:'28 فبراير 2026', fu:'12 مارس 2026', s:'ok',   sl:'متابعة نشطة', v:14},
+  {n:'ريم فؤاد',        id:'#1088', p:'0106 555 7777', lv:'22 فبراير 2026', fu:'12 مارس 2026', s:'ok',   sl:'متابعة نشطة', v:8}
+];
+function renderPatients(){
+  const tb = document.getElementById('patientsTable');
+  if(!tb) return;
+  tb.innerHTML = PATIENTS.map(p=>`
+    <tr onclick="go('profile')">
+      <td><div class="cell-name"><div class="av">${p.n.split(' ')[0][0]} ${p.n.split(' ')[1]?.[0]||''}</div>
+        <div><div class="nm">${p.n}</div><div class="id">${p.id}</div></div></div></td>
+      <td style="color:var(--text-2);font-variant-numeric:tabular-nums">${p.p}</td>
+      <td style="color:var(--text-2)">${p.lv}</td>
+      <td style="color:var(--text-2)">${p.fu}</td>
+      <td><span class="badge ${p.s}">${p.sl}</span></td>
+      <td style="color:var(--muted)">${p.v}</td>
+      <td><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();openModal('modalNewAppt')">حجز</button></td>
+    </tr>`).join('');
+}
+
+/* ============================================================
+   DAY + MONTH
+   ============================================================ */
+function renderDayList(){
+  const el = document.getElementById('dayList');
+  if(!el) return;
+  const sorted = [...queue].sort((a,b)=>a.time.localeCompare(b.time));
+  el.innerHTML = sorted.map(p=>{
+    const num = getOrderNum(p);
+    const isCur = p.status === 'current';
+    return `
+      <div class="q-card ${isCur?'is-current':''}">
+        <div class="q-num ${isCur?'current':''}">${num}</div>
+        <div class="q-time-big">${p.time}<small>${p.bookedAt}</small></div>
+        <div class="q-info">
+          <div class="q-name">${p.name} ${statusBadge(p.status)}</div>
+          <div class="q-meta"><span>${p.type}</span><span>${p.fileNo}</span></div>
+        </div>
+        <div class="q-acts">
+          ${p.status==='waiting'?`<button class="btn btn-sm btn-primary" onclick="makeCurrent(${p.id})">دخول</button>`:''}
+          ${isCur?`<button class="btn btn-sm btn-primary" onclick="finishCurrent()">إنهاء</button>`:''}
+        </div>
+      </div>`;
+  }).join('');
+  renderIcons(el);
+}
+function renderMonth(){
+  const grid = document.getElementById('monthGrid');
+  if(!grid) return;
+  let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">';
+  const days = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+  days.forEach(d => html += `<div style="font-weight:700;color:var(--muted);font-size:12px;padding:8px;text-align:center">${d}</div>`);
+  for(let d=1;d<=31;d++){
+    const isToday = d===12;
+    const hasAppt = [1,3,5,7,8,10,12,13,14,17,19,22,24,26,29,31].includes(d);
+    html += `<div style="padding:8px;background:${isToday?'var(--primary-soft)':'var(--surface-2)'};border:1px solid ${isToday?'var(--mint-line)':'var(--border-soft)'};border-radius:10px;min-height:80px;font-size:12px;text-align:right">
+      <div style="font-weight:700;color:${isToday?'var(--primary)':'var(--text-2)'};margin-bottom:4px">${d}</div>
+      ${hasAppt?`<div style="font-size:10px;background:var(--mint-soft);color:var(--mint-ink);padding:2px 5px;border-radius:4px;font-weight:700">حجوزات</div>`:''}
+      ${d===12?'<div style="font-size:10px;background:var(--primary);color:#fff;padding:2px 5px;border-radius:4px;font-weight:700;margin-top:2px">اليوم</div>':''}
+    </div>`;
+  }
+  html += '</div>';
+  grid.innerHTML = html;
+}
+
+function renderAll(){
+  renderReception();
+  renderDoctor();
+  renderDashboard();
+  renderFiles();
+  renderPatients();
+  renderDayList();
+  renderMonth();
+}
+
+/* ============================================================
+   UPLOAD
+   ============================================================ */
+let uploadPatientId = null;
+let uploadSource = null;
+let uploadType = 'روشتة';
+
+function openUploadFor(patientId){
+  if(patientId === 'current'){
+    const cur = queue.find(q => q.status === 'current');
+    if(!cur){ toast('لا توجد مريضة حالية','warn'); return; }
+    uploadPatientId = cur.id;
+  } else {
+    uploadPatientId = patientId;
+  }
+  const p = queue.find(q => q.id === uploadPatientId);
+  if(!p){ toast('لم يتم العثور على المريضة','warn'); return; }
+
+  uploadSource = null;
+  uploadType = 'روشتة';
+  renderUploadModal(p);
+}
+
+function renderUploadModal(p){
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = `
+    <div class="modal wide" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div><div class="t">رفع ورقة جديدة</div><div class="s">${p.name} · ${p.fileNo}</div></div>
+        <button class="icon-btn x" onclick="closeModal()"><span class="ic" data-ic="x"></span></button>
+      </div>
+      <div class="modal-body">
+        <div id="sourcePicker" class="upload-sources">
+          <button class="source-card" onclick="pickUploadSource('camera')">
+            <div class="s-icon" style="background:var(--mint-soft)">
+              <span class="ic" data-ic="image" style="color:var(--mint-ink)"></span>
+            </div>
+            <div>
+              <div class="s-title">📷 التقاط صورة</div>
+              <div class="s-desc">افتح الكاميرا وصوّر الورقة مباشرة</div>
+            </div>
+          </button>
+          <button class="source-card" onclick="pickUploadSource('file')">
+            <div class="s-icon" style="background:var(--info-soft)">
+              <span class="ic" data-ic="folder" style="color:var(--info)"></span>
+            </div>
+            <div>
+              <div class="s-title">📁 رفع ملف</div>
+              <div class="s-desc">JPG · PNG · PDF · DOCX</div>
+            </div>
+          </button>
+        </div>
+
+        <div id="uploadStage"></div>
+
+        <div class="form-grid">
+          <div class="field full">
+            <label>نوع الورقة *</label>
+            <div class="type-chips" id="typeChips">
+              ${['روشتة','سونار','تحليل','PDF','أخرى'].map(t=>`<button class="type-chip ${t===uploadType?'active':''}" onclick="setUploadType('${t}')">${t}</button>`).join('')}
+            </div>
+          </div>
+          <div class="field">
+            <label>ربط بالزيارة</label>
+            <select class="select" id="uploadVisit">
+              <option>الزيارة الحالية — ${new Date().toLocaleDateString('ar-EG')}</option>
+              <option>زيارة سابقة</option>
+              <option>بدون ربط</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ملاحظة (اختياري)</label>
+            <input class="input" id="uploadNote" placeholder="وصف مختصر…">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+        <div class="end">
+          <button class="btn btn-primary" onclick="confirmUpload()" id="confirmUploadBtn" disabled>
+            <span class="ic" data-ic="check"></span> تأكيد الرفع
+          </button>
+        </div>
+      </div>
+    </div>`;
+  renderIcons(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+}
+
+function pickUploadSource(src){
+  uploadSource = src;
+  const stage = document.getElementById('uploadStage');
+  const picker = document.getElementById('sourcePicker');
+  if(!stage) return;
+  picker.style.display = 'none';
+
+  if(src === 'camera'){
+    stage.innerHTML = `
+      <div class="camera-view" style="margin-bottom:16px">
+        <div class="camera-frame">
+          <div class="camera-corner tl"></div>
+          <div class="camera-corner tr"></div>
+          <div class="camera-corner bl"></div>
+          <div class="camera-corner br"></div>
+          <div class="camera-hint">
+            <span class="big">📷</span>
+            ضع الورقة داخل الإطار ثم اضغط التقاط
+          </div>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" onclick="capturePhoto()">
+          <span class="ic" data-ic="image"></span> التقاط الصورة
+        </button>
+        <button class="btn btn-ghost btn-block mt-16" onclick="backToSource()">رجوع</button>
+      </div>`;
+    renderIcons(stage);
+  } else {
+    stage.innerHTML = `
+      <div class="captured-view" style="background:var(--info-soft);border-color:rgba(45,127,176,.24);margin-bottom:16px">
+        <div class="ok-icon" style="background:var(--info)">📁</div>
+        <div class="cap-t">تم اختيار الملف</div>
+        <div class="cap-d">document-${Date.now()}.pdf</div>
+      </div>
+      <button class="btn btn-ghost btn-block mb-16" onclick="backToSource()">تغيير الملف</button>`;
+    enableConfirm();
+  }
+}
+
+function capturePhoto(){
+  const stage = document.getElementById('uploadStage');
+  stage.innerHTML = `
+    <div class="captured-view" style="margin-bottom:16px">
+      <div class="ok-icon"><span class="ic" data-ic="check"></span></div>
+      <div class="cap-t">تم التقاط الصورة بنجاح</div>
+      <div class="cap-d">photo-${Date.now()}.jpg · 2.4 MB</div>
+    </div>
+    <div class="row" style="gap:8px;justify-content:center;margin-bottom:16px">
+      <button class="btn btn-ghost" onclick="pickUploadSource('camera')">إعادة التصوير</button>
+      <button class="btn btn-ghost" onclick="backToSource()">تغيير المصدر</button>
+    </div>`;
+  renderIcons(stage);
+  enableConfirm();
+}
+
+function backToSource(){
+  uploadSource = null;
+  const stage = document.getElementById('uploadStage');
+  const picker = document.getElementById('sourcePicker');
+  if(stage) stage.innerHTML = '';
+  if(picker) picker.style.display = 'grid';
+  const btn = document.getElementById('confirmUploadBtn');
+  if(btn) btn.disabled = true;
+}
+
+function setUploadType(t){
+  uploadType = t;
+  document.querySelectorAll('#typeChips .type-chip').forEach(c=>{
+    c.classList.toggle('active', c.textContent === t);
+  });
+}
+
+function enableConfirm(){
+  const btn = document.getElementById('confirmUploadBtn');
+  if(btn) btn.disabled = false;
+}
+
+function confirmUpload(){
+  if(!uploadSource){ toast('اختر مصدر الورقة أولاً','warn'); return; }
+  const p = queue.find(q => q.id === uploadPatientId);
+  if(!p){ closeModal(); return; }
+
+  if(!DOCUMENTS[p.id]) DOCUMENTS[p.id] = [];
+  let thumb;
+  if(uploadType === 'سونار') thumb = usThumb(new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'}).toUpperCase(), '—');
+  else if(uploadType === 'تحليل') thumb = labThumb(new Date().toLocaleDateString('ar-EG'), p.name);
+  else thumb = rxThumb(new Date().toLocaleDateString('ar-EG'), p.name);
+
+  DOCUMENTS[p.id].push({
+    id: 'd_' + Date.now(),
+    type: uploadType,
+    name: `${uploadType} — ${new Date().toLocaleDateString('ar-EG', {day:'numeric', month:'short'})}.${uploadSource==='camera'?'jpg':'pdf'}`,
+    date: new Date().toLocaleDateString('ar-EG', {day:'numeric', month:'short'}),
+    visit: 'الزيارة الحالية',
+    thumb
+  });
+
+  closeModal();
+  renderAll();
+  toast(`تم رفع «${uploadType}» لمريضة ${p.name} بنجاح`, 'ok');
+}
+
+/* ============================================================
+   GENERIC MODALS
+   ============================================================ */
+const MODALS = {
+  modalNewPatient:{ title:'تسجيل مريضة جديدة', sub:'إضافة ملف جديد', body:`
+    <div class="form-grid">
+      <div class="field full"><label>الاسم الكامل *</label><input class="input" placeholder="الاسم الثلاثي"></div>
+      <div class="field"><label>رقم الهاتف *</label><input class="input" placeholder="01xxxxxxxxx"></div>
+      <div class="field"><label>تاريخ الميلاد</label><input class="input" type="date"></div>
+      <div class="field"><label>الحالة الاجتماعية</label><select class="select"><option>متزوجة</option><option>غير متزوجة</option></select></div>
+      <div class="field"><label>فصيلة الدم</label><select class="select"><option>غير معروفة</option><option>O+</option><option>A+</option><option>B+</option><option>AB+</option></select></div>
+    </div>`,
+    footer:`<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><div class="end"><button class="btn btn-primary" onclick="closeModal();toast('تم تسجيل المريضة')">حفظ</button></div>`},
+
+  modalNewAppt:{ title:'حجز موعد جديد', sub:'سيحصل على رقم دور تلقائي', body:`
+    <div class="form-grid">
+      <div class="field full"><label>المريضة *</label><input class="input" placeholder="ابحث…" value="نورة عبد الرحمن"></div>
+      <div class="field"><label>التاريخ *</label><input class="input" type="date" value="2026-03-14"></div>
+      <div class="field"><label>الوقت *</label><input class="input" type="time" value="10:00"></div>
+      <div class="field"><label>نوع الزيارة</label><select class="select"><option>كشف جديد</option><option>متابعة</option><option>متابعة حمل</option><option>سونار</option><option>مراجعة تحاليل</option></select></div>
+      <div class="field full"><label>ملاحظات</label><input class="input" placeholder="اختياري"></div>
+    </div>`,
+    footer:`<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><div class="end"><button class="btn btn-primary" onclick="addNewBooking()">تأكيد</button></div>`}
+};
+
+function openModal(key){
+  const m = MODALS[key]; if(!m) return;
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = `
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-head"><div><div class="t">${m.title}</div><div class="s">${m.sub||''}</div></div>
+        <button class="icon-btn x" onclick="closeModal()"><span class="ic" data-ic="x"></span></button></div>
+      <div class="modal-body">${m.body}</div>
+      <div class="modal-foot">${m.footer||''}</div>
+    </div>`;
+  renderIcons(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+}
+
+function openModalCustom(title, sub, body, actions){
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = `
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-head"><div><div class="t">${title}</div><div class="s">${sub||''}</div></div>
+        <button class="icon-btn x" onclick="closeModal()"><span class="ic" data-ic="x"></span></button></div>
+      <div class="modal-body">${body}</div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+        <div class="end">${actions.map((a,i)=>`<button class="btn ${a.cls}" data-act="${i}">${a.label}</button>`).join('')}</div>
+      </div>
+    </div>`;
+  renderIcons(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+  overlay.querySelectorAll('[data-act]').forEach(btn=>{
+    btn.onclick = ()=> actions[parseInt(btn.dataset.act)].fn();
+  });
+}
+
+function closeModal(){
+  const o = document.getElementById('overlay');
+  o.classList.remove('open');
+  setTimeout(()=>{ o.innerHTML=''; }, 180);
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ closeModal(); closeSidebar(); }
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); document.querySelector('.search input')?.focus(); }
+});
+
+function addNewBooking(){
+  const times = ['12:15','12:30','12:45','13:00','13:15'];
+  const t = times[Math.floor(Math.random()*times.length)];
+  const now = new Date();
+  const newId = Math.max(...queue.map(q=>q.id), 0) + 1;
+  queue.push({
+    id: newId, name: 'مريضة جديدة ' + newId,
+    time: t,
+    bookedAt: String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),
+    type: 'كشف جديد', status: 'waiting',
+    phone: '0100 000 0000', age: 30, fileNo: '#' + (1200 + newId)
+  });
+  DOCUMENTS[newId] = [];
+  closeModal();
+  renderAll();
+  toast('تم إضافة الحجز — رقم الدور ' + getOrderNum(queue[queue.length-1]));
+}
+
+/* ============================================================
+   CONFIRM + TOAST
+   ============================================================ */
+function confirmAction(title, desc, confirmLabel, onConfirm){
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = `
+    <div class="modal" style="width:440px" onclick="event.stopPropagation()">
+      <div class="modal-body" style="padding:26px 26px 8px">
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div style="width:44px;height:44px;border-radius:14px;flex:none;display:grid;place-items:center;background:var(--danger-soft);color:var(--danger)">
+            <span class="ic" data-ic="alert" style="width:20px;height:20px"></span></div>
+          <div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px">${title}</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.75">${desc}</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot" style="border-top:none;padding-top:12px">
+        <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+        <div class="end"><button class="btn btn-danger" id="confirmYes">${confirmLabel}</button></div>
+      </div>
+    </div>`;
+  renderIcons(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+  document.getElementById('confirmYes').onclick = ()=>{ closeModal(); setTimeout(onConfirm, 200); };
+}
+
+function toast(msg, type='ok'){
+  const root = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type==='ok'?'':type);
+  const icon = type==='err'?'x':type==='warn'?'alert':type==='info'?'bell':'check';
+  el.innerHTML = `<span class="ic" data-ic="${icon}"></span><span>${msg}</span>`;
+  renderIcons(el);
+  root.appendChild(el);
+  setTimeout(()=>{
+    el.style.transition='.25s'; el.style.opacity='0'; el.style.transform='translateY(10px)';
+    setTimeout(()=>el.remove(), 260);
+  }, 3000);
+}
+
+/* ============================================================
+   CALENDAR SWITCH
+   ============================================================ */
+document.querySelectorAll('[data-cal]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-cal]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const m = btn.dataset.cal;
+    document.getElementById('calDay').style.display   = m==='day'   ? 'block':'none';
+    document.getElementById('calWeek').style.display  = m==='week'  ? 'block':'none';
+    document.getElementById('calMonth').style.display = m==='month' ? 'block':'none';
+  });
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderIcons();
+buildSidebar('doctor');
+renderAll();
+setInterval(()=>{
+  if(document.getElementById('screen-doctor')?.classList.contains('active')) renderDoctor();
+  if(document.getElementById('screen-reception')?.classList.contains('active')) renderReception();
+}, 30000);
+</script>
+</body>
+</html>
